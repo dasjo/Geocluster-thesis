@@ -7,7 +7,7 @@
 
 A central aspect in web mapping is dealing with spatial data. Decisions on how to structure and store spatial data highly influence the computation tasks that may be performed on such data. This mainly depends on the type of spatial data, where points are the most basic of all. Depending on the use case, different types of data are to be represented and stored: points, lines, rectangles, regions, surfaces and/or volumes. While most of the discussed concepts may be extended or generalized for processing more complex types of data, this is out of scope for this thesis. Instead, we focus on points as the most common type of spatial data~\cite{Samet90spatialdata}.
 
-One fundamental way to store spatial data is the quadtree, a hierarchical data structure based on recursive decomposition of space. We will first discuss space orders \& decomposition and then put those into context when outlining the basics of the quadtree.
+One fundamental way to store spatial data is the quadtree, a hierarchical data structure based on recursive decomposition of space. Hanan Samet attributes the history of quadtrees (and octrees which are their 3-dimensional extension) to Dijkstra, who invented a one-level decomposition of a matrix into square blocks. Morton then applied this technique to creating a spatial index (z-order). We will first discuss space orders \& decomposition and then put those into context when outlining the basics of the quadtree.
 
 
 \subsection{Space order methods}
@@ -52,8 +52,16 @@ The simplest polygonal space decomposition method is based on squares. It is dir
 
 \subsection{Quadtree}
 
+Quadtrees are hierarchical data structures based on recursive decomposition of space. Their original motivation was to optimize storage by aggregating identical or similar values. Over time they have also been studied to optimize execution time of spatial application and have been established as a common practice for representing and storing spatial data. The resolution of a quadtree can be fixed or variable and directly relates to the number of decomposition times of the space where the data points live. A standardized implementation is the region quadtree which subdivides space into four equal-sized quadrants.
 
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{figures/quadtree.png}
+    \label{fig:space-decompositions}
+    \caption{An example of (a) a region, (b) its binary array, (c) its maximal blocks (blocks in the region are shaded), and (d) the corresponding quadtree~\cite[p 3]{Samet90spatialdata}.}
+  \end{center}
+\end{figure}
 
-
+Quadtrees can be constructed in different ways. A top-down approach implements the Morton order which maps the multidimensional data to one dimension and has been introduced in chapter~\ref{chapter:space-order}. Also note that the term quadtree has taken various meanings: actually it is a trie (or digital tree) structure because each data key is a sequence of characters. ``A node at depth $i$ in the trie represents an $M$-way branch depending on the $i$-th character'' \cite{Samet90spatialdata}.
 
 
