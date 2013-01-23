@@ -7,3 +7,22 @@
 
 TODO
 
+
+\section{Clustering and maps}
+
+A common use case in web mapping is representing markers on a slippy map.Markers are the most simple and common geometric features that visualize vector data information on maps. Publicly available services like OpenStreetMap or Google Maps allow a broader audience to create interactive maps that tell stories in a visual way.
+
+Visualizing thousands of markers on a single map are both challenges to human and digital computability. Obviously, when telling a story information needs to be told in a compact way. The human brain can only process a limited amount of data at the same time. Similarly, large amounts of data involve a higher burden on the computer components that participate in the web mapping process.
+
+An exemplary scenario for visualizing data on a map and the involved components is illustrated in Figure x (TODO):
+
+1. A client requests the server to display a map.
+2. The server receives and understands the request.
+3. The server fetches the map data from the database.
+4. The server delivers the map data and further markup to the client.
+5. The client receives the map data with the markup.
+6. A javascript library visualizes the map data on a map.
+
+The important part from a performance perspective is that the whole data that is visualized on the client first needs to be fetched, processed and delivered by the server. Next, the client also receives all the data and visualizes it on its own using a javascript library. (TODO Reference chapter) Thus, large amounts of map data do not only mean more visual information to process for the user. They also have negative impact on performance on the involved components from server to client. As a result, this means slower response times. 
+
+The task of clustering geospatial data for slippy maps on a per-request basis requires a performance-optimized approach that works in real-time. Details on this decision are explained in (TODOREF). Given these assumptions, this thesis touches clustering as a research discipline only on the surface. Though, an overview of the fundamental concepts for cluster analysis should be given to provide context for the decisions to be made.

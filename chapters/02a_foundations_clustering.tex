@@ -3,41 +3,27 @@
 % foundations - clustering
 %
 
-\section{Clustering and maps}
-
-A common use case in web mapping is representing markers on a slippy map.Markers are the most simple and common geometric features that visualize vector data information on maps. Publicly available services like OpenStreetMap or Google Maps allow a broader audience to create interactive maps that tell stories in a visual way.
-
-Visualizing thousands of markers on a single map are both challenges to human and digital computability. Obviously, when telling a story information needs to be told in a compact way. The human brain can only process a limited amount of data at the same time. Similarly, large amounts of data involve a higher burden on the computer components that participate in the web mapping process.
-
-An exemplary scenario for visualizing data on a map and the involved components is illustrated in Figure x (TODO):
-
-1. A client requests the server to display a map.
-2. The server receives and understands the request.
-3. The server fetches the map data from the database.
-4. The server delivers the map data and further markup to the client.
-5. The client receives the map data with the markup.
-6. A javascript library visualizes the map data on a map.
-
-The important part from a performance perspective is that the whole data that is visualized on the client first needs to be fetched, processed and delivered by the server. Next, the client also receives all the data and visualizes it on its own using a javascript library. (TODO Reference chapter) Thus, large amounts of map data do not only mean more visual information to process for the user. They also have negative impact on performance on the involved components from server to client. As a result, this means slower response times. 
-
-The task of clustering geospatial data for slippy maps on a per-request basis requires a performance-optimized approach that works in real-time. Details on this decision are explained in (TODOREF). Given these assumptions, this thesis touches clustering as a research discipline only on the surface. Though, an overview of the fundamental concepts for cluster analysis should be given to provide context for the decisions to be made.
-
 \section{Clustering}
 
-Clustering is the task of grouping unlabeled data in an automated way. It can also be described as the unsupervised classification of patterns into groups. TODO CHAPTER OVERVIEW
-
-The techniques of cluster analysis are applied in numerous scenarios including data mining, document retrieval, image segmentation and pattern classification. They are used to solve different tasks including pattern-analysis, grouping, decision-making or machine-learning.
+Clustering is the task of grouping unlabeled data in an automated way. It can also be described as the unsupervised classification of patterns into groups. The techniques of cluster analysis are applied in numerous scenarios including data mining, document retrieval, image segmentation and pattern classification. They are used to solve different tasks including pattern-analysis, grouping, decision-making or machine-learning.
 
 Cluster analysis has been studied since the early beginnings of computer science and applies to a broad number of research fields. Different research communities have created a variety of vocabularies to describe methods related to clustering. Analog to the term cluster analysis, other names are used in literature: Q-analysis, topology, grouping, comping, classification, numerical taxonomy and unsupervised pattern recognition.
 
-As indicated, clustering is a wide and generic term. Often it is used to refer to specific concepts which are appropriate for solving specific tasks. This means that efficient clustering algorithms have been developed and studied over the years for certain research fields. While such algorithms might perform well under certain circumstances, they might be completely inappropriate for other use cases. Imagine, an algorithm that  fits image segmentation well but is less useful in machine-learning~\cite{Meert06clustermaps, Jain99clusterreview}. 
+As indicated, clustering is a wide and generic term. Often it is used to refer to specific concepts which are appropriate for solving specific tasks. This means that efficient clustering algorithms have been developed and studied over the years for certain research fields. While such algorithms might perform well under certain circumstances, they might be completely inappropriate for other use cases. Imagine, an algorithm that  fits image segmentation well but is less useful in machine-learning~\cite{Meert06clustermaps, Jain99clusterreview}.
 
+Clustering is a general concept that applies to multivariate data. Spatial data in this sense is a special case, and 2-dimensional spatial data reduces the problem space even further to planar space. Figure~\ref{fig:clusters} visualizes such an example of clusters of point patterns in two dimensional space. Humans can understand and perform this kind of clustering tasks competitively whereas clustering in high-dimensional space is difficult for humans to obtain. 
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.75\textwidth]{figures/clusters.png}
+    \label{fig:clusters}
+    \caption{Clusters of point patterns in two dimensions~\cite[p 2]{Jain99clusterreview}.}
+  \end{center}
+\end{figure}
 
 \subsection{The Clustering task}
 
-Clustering is the task of aggregating items (also described as features) into clusters, based on similarities or proximity.
-
-A.K. Jain, M.N. Murty and P.J. Flynn~\cite{Jain99clusterreview} define the following steps involved in a typical pattern clustering activity:
+Clustering is the task of aggregating items (also described as features) into clusters, based on similarities or proximity. A.K. Jain, M.N. Murty and P.J. Flynn~\cite{Jain99clusterreview} define the following steps involved in a typical pattern clustering activity:
  
 \begin{quote}
 \begin{enumerate}
@@ -51,11 +37,106 @@ A.K. Jain, M.N. Murty and P.J. Flynn~\cite{Jain99clusterreview} define the follo
 
 \subsection{History}
 
-K-means, one of the oldest and most widely used clustering algorithm was introduced already in 1967~\cite{MacQueen67kmeans, Meert06clustermaps}. Tryon and Bailey (1970) wrote one of the first books on cluster analysis. In 1973, Anderberg published "Cluster analysis for applications", a book that Jain and Dubes describe as "the most comprehensive book for those who want to use cluster analysis"~\cite{Jain88clustering}.  While Tryon and Bailey focus on a single clustering approach (BC TRY), Anderberg already gives a comprehensive overview of clustering methods, strategies and a comparative evaluation of cluster analysis methods.
+K-means, one of the oldest and most widely used clustering algorithm was introduced already in 1967~\cite{MacQueen67kmeans, Meert06clustermaps}. Tryon and Bailey (1970) wrote one of the first books on cluster analysis. In 1973, Anderberg published ``Cluster analysis for applications'', a book that Jain and Dubes describe as "the most comprehensive book for those who want to use cluster analysis"~\cite{Jain88clustering}.  While Tryon and Bailey focus on a single clustering approach (BC TRY), Anderberg already gives a comprehensive overview of clustering methods, strategies and a comparative evaluation of cluster analysis methods.
 
-Clustering algorithms where improved and developed further over time, i.e. to account for performance issues. Prominent algorithms in that area include CLARANS~\cite{Ng94CLARANS} and BIRCH~\cite{Zhang96BIRCH} which have a time complexity linear in the number of patterns. A popular, density based clustering algorithm is DBSCAN~\cite{Ester96DBSCAN}.
+Clustering algorithms were improved and developed further over time, i.e. to account for performance issues. Prominent algorithms in that area include CLARANS~\cite{Ng94CLARANS} and BIRCH~\cite{Zhang96BIRCH} - they have a time complexity linear in the number of patterns. A popular, density based clustering algorithm is DBSCAN~\cite{Ester96DBSCAN}. Jain and Dubes summarize hierarchical and partitional clustering approaches in ``Algorithms for Clustering Data'' (1988) with a special focus on applications in image processing. Numerous subsequent publications on cluster analysis are released continuously~\cite{Jain99clusterreview}. 
 
-Jain and Dubes summarize hierarchical and partitional clustering approaches in "Algorithms for Clustering Data" (1988) with a special focus on applications in image processing. Numerous, subsequent publications on cluster analysis are released continuously~\cite{Jain99clusterreview}. 
+\subsection{Cluster types}
 
-TODO: Add information about clustering history for 200x.  
+Clusters are groupings of similar objects. Different models of interpretations of clusters exist: most notably, they can be classified into different types of clusters:
+
+\begin{itemize}
+
+\item \textbf{Well-separated} clusters have the property that objects within a cluster are closer to each other than any object outside of the cluster. As the name suggests, this is only possible when the data contains natural clusters that are quite far from each other.
+
+\item \textbf{Prototype-based} clusters are defined so that objects are closer to their cluster's prototype than to any other one. Prototypes of clusters are either centroids (the mean of all points for a cluster) for continuous data or medoids (the most central point within a cluster) for categorical data.
+
+\item \textbf{Graph-based} clusters can be defined as \emph{connected components} within a graph. That is a group of objects (nodes) where the objects are connected to one another but disconnected from objects outside of the cluster.
+
+\item \textbf{Density-based} clusters group objects within dense regions that are surrounded by a region of low density. Such a definition is often employed when noise is present or clusters are irregular~\cite{Meert06clustermaps}.
+
+\end{itemize}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.75\textwidth]{figures/cluster_types.png}
+    \label{fig:clusters}
+    \caption{Types of clusters: (a) Well-separated, (b) Prototype-based, (c) Graph-based, (d) Density-based~\cite[p 9]{Meert06clustermaps}.}
+  \end{center}
+\end{figure}
+
+\subsection{Clustering techniques}
+
+Literature research reveals classifications of clustering techniques according to various aspects. Jain, Murty and Flynn primarily group the algorithms into hierarchical and partitional ones~\cite{Jain99clusterreview}. On the other hand, Stein and Busch split them into hierarchical, iterative, density-based and meta-search-controlled~\cite{Stein05density}. The differentiation of properties into groupings of clustering techniques and cross-cutting aspects is inconsistent among publications. This again shows the wide variety in which cluster analysis is being discussed and developed.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{figures/clustering_approaches_jain.png}
+    \label{fig:clusters}
+    \caption{A taxonomy of clustering approaches.~\cite[p 275]{Jain99clusterreview}.}
+  \end{center}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{figures/clustering_techniques_meert.png}
+    \label{fig:clusters}
+    \caption{A taxonomy of cluster algorithms as cited in~\cite[p 14]{Meert06clustermaps}, based on \cite{Stein05density}.}
+  \end{center}
+\end{figure}
+
+\begin{itemize}
+
+\item \textbf{Hierarchical versus Partitional}. Whether it is nested is the classic differentiation between clustering techniques. \textit{Partitional clustering} divides the data set into non-overlapping clusters. It usually is driven by an \textit{iterative} approach that optimized the result.
+\textit{Hierarchical clustering} organizes clusters as a tree. Each node in the tree is the union of its children. Both clustering types are related: applying partitional clusterings in a sequence can lead to a hierarchical clustering and cutting the hierarchical tree at a particular level produces a partitional clustering~\cite{Meert06clustermaps}. 
+
+An example of the relationship between hierarchical and partitional clustering is given by the following example of density-based algorithms. \textit{DBSCAN} produces simple data partitions and was further developed into \textit{OPTICS} which clusters data hierarchically~\cite{wiki:DBSCAN}.     
+
+\item \textbf{Agglomerative versus divisive}. \textit{Agglomerative clustering} algorithms start with single items and successively merge them together into clusters. On the other hand, \textit{divisive clustering} algorithms begin with a single cluster that contains all items and splits it up until a stopping criterion is met. Each such merging or splitting procedure can be seen as one level in the hierarchical clustering tree~\cite{Jain99clusterreview}.
+
+\item \textbf{Hard versus Fuzzy}. \textit{Hard clustering} algorithms assign every item to a single cluster, this means that the clustering is \textit{exclusive}. A \textit{fuzzy clustering} algorithm may attribute an item to multiple clusters in a \textit{non-exclusive way }by assigning degrees of membership. A fuzzy clustering may be converted into a hard clustering by assigning every data item to the cluster with the highest degree of membership~\cite{Jain99clusterreview, Meert06clustermaps}.
+
+\item \textbf{Complete versus Partial}. With \textit{complete clustering}, assigning every point to a cluster is required. \textit{Partial clustering} relaxes this requirement so that not every point needs to be assigned to a cluster. This can be particularly useful when clustering data sets with outliers and noise. In such cases, the partial clustering can be used to focus on crowded areas~\cite{Jain99clusterreview}. 
+
+\end{itemize}
+
+Further aspects include monothetic versus polythetic and incremental versus non-incremental clustering techniques. 
+
+
+\subsection{Clustering algorithms}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
