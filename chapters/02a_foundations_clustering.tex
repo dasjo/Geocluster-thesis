@@ -102,6 +102,32 @@ An example of the relationship between hierarchical and partitional clustering i
 
 Further aspects include monothetic versus polythetic and incremental versus non-incremental clustering techniques. 
 
+\subsection{Proximity}
+
+Similarity is fundamental to the definition of a cluster. In order to measure similarity, clustering algorithms evaluate their proximity. Continuous data requires different proximity measurements than categorical data.
+
+For continuos data, the proximity between items is typically quantified by dissimilarity in terms of distance measures. The three main distance functions are visualized in figure~\ref{fig:distance} and explained as follows\cite{Meert06clustermaps}:
+
+\begin{itemize}
+
+\item \textbf{Euclidian distance}. The euclidian distance is the geometric distance in the n-dimensional space. It is is the most common type of distance and defined as
+\[ distance(x, y) = \sqrt{\sum_{i} (x_i - y_i)^2} \]
+
+\item \textbf{Manhattan distance}. The manhattan distance, also known as city-block distance is distance when walking from one point to another following the axes. Compare with walking by following a raster like in manhattan. It is defined as
+\[ distance(x, y) = \sum_{i} |x_i - y_i| \]
+
+\item \textbf{Chebychev distance}. The manhattan distance, also known as city-block distance is distance when walking from one point to another following the axes. Compare with walking by following a raster like in manhattan. It is defined as
+\[ distance(x, y) = max |x_i - y_i| \]
+
+\end{itemize}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{figures/distance.png}
+    \label{fig:distance}
+    \caption{Distance measures for continuous data~\cite[p 12]{Meert06clustermaps}.}
+  \end{center}
+\end{figure}
 
 \subsection{Clustering algorithms}
 
