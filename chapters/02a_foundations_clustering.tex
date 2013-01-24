@@ -114,6 +114,7 @@ Further aspects include monothetic versus polythetic and incremental versus non-
 
 
 \subsection{Proximity}
+\label{chapter:proximity}
 
 Similarity is fundamental to the definition of a cluster. In order to measure similarity, clustering algorithms evaluate their proximity. Continuous data requires different proximity measurements than categorical data.
 
@@ -141,14 +142,16 @@ For continuos data, the proximity between items is typically quantified by dissi
 \end{itemize}
 
 
-
 \subsection{Clustering algorithms}
 
 Researchers have created a multitude of algorithms, each appropriate for a certain task. As we will find out later, the requirements to the spatial clustering algorithm for this thesis are specific, which out-rules most scientific clustering algorithms which are geared towards image recognition or other disciplines. To provide an overview and to understand the basic differentiation of clustering techniques explained in \ref{chapter:clustering-techniques}, in this chapter we will introduce 3 foundational clustering algorithms: \textit{K-means}, \textit{Agglomerative Hierarchical Clustering Algorithm} and \textit{DBSCAN}.
 
 \begin{itemize}
 
-\item \textbf{K-means}. The K-means is the most commonly used and simple algorithm based on a \textit{squared error criterion}. It creates a one-level partitioning of the data items by dividing them into \textit{K} clusters. By starting with a random initial partition it iteratively reassigns the patterns to clusters based on similarity.  The clustering process is completed when a convergence criterion is met, i.e. no further reassignments happen. Clusters are defined by \textit{cluster prototypes}: the centroid of the clustered items. Alternatively, the \textit{K-medoid} algorithm uses the most representative data item instead of the centroid~\cite{Jain99clusterreview, Meert06clustermaps}.
+\item \textbf{K-means}. The K-means is the most commonly used and simple algorithm based on a \textit{squared error criterion}. It creates a one-level partitioning of the data items by dividing them into \textit{K} clusters. By starting with a random initial partition it iteratively reassigns the patterns to clusters based on similarity.  The clustering process is completed when a convergence criterion is met, i.e. no further reassignments happen. Clusters are defined by \textit{cluster prototypes}: the centroid of the clustered items. Alternatively, the \textit{K-medoid} algorithm uses the most representative data item instead of the centroid.
+
+The time complexity of the K-means algorithm is linear to the number of points:
+\[time~complexity = \BigO{n}\]
 
 \begin{algorithm}[t]
   \SetKwInOut{Input}{input}
@@ -159,12 +162,27 @@ Researchers have created a multitude of algorithms, each appropriate for a certa
     {Form $K$ clusters by assigning each point to its closest centroid}\;
     {Recompute the centroid of each cluster}\;
   }
-  \caption{K-means algorithm}\label{lag:k-means}
+  \caption{K-means algorithm~\cite{Meert06clustermaps}}
+  \label{lag:k-means}
 \end{algorithm}
 
- Squared error algorithms 
+The selection of initial centroids affects the final outcome of the clustering process. Choosing them randomly is a simple but not very affective approach which can be compensating by applying multiple runs of the algorithm to retrieve an optimal result set. Optimizations to the centroid initialization include applying a hierarchical clustering or choosing distant points in the beginning.
 
-\item \textbf{Agglomerative Hierarchical Clustering Algorithm}. 
+Assigning points to the closest centroid requires a proximity measure, as explained in \ref{chapter:proximity}. Simple measures like the Euclidian distance are preferred, as this step needs to happen repeatedly within the algorithm. For each cluster, the centroid needs to be recalculated afterwards. This procedure is repeated until centroids do not change any more \cite{Jain99clusterreview, Meert06clustermaps}.
+
+Figure \ref{fig:clustering_k-means} illustrates a K-means clustering process.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{figures/clustering_k-means.png}
+    \label{fig:clustering_k-means}
+    \caption{Convergence of K-means clustering: (a) initial data; (b) cluster membership after first loop; (c) cluster membership after second loop~\cite[p 99]{Jain88clustering}.}
+  \end{center}
+\end{figure}
+
+\item \textbf{Agglomerative Hierarchical Clustering Algorithm}. This exemplary hierarchical clustering algorithm creates a hierarchy of nested sub clusters by serial partitioning. Its agglomerative nature makes it start with every data item as a single clusters which get merged sub-sequentially. 
+
+
 
 \item \textbf{DBSCAN}. 
 
