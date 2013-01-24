@@ -141,7 +141,6 @@ For continuos data, the proximity between items is typically quantified by dissi
 
 \end{itemize}
 
-
 \subsection{Clustering algorithms}
 
 Researchers have created a multitude of algorithms, each appropriate for a certain task. As we will find out later, the requirements to the spatial clustering algorithm for this thesis are specific, which out-rules most scientific clustering algorithms which are geared towards image recognition or other disciplines. To provide an overview and to understand the basic differentiation of clustering techniques explained in \ref{chapter:clustering-techniques}, in this chapter we will introduce 3 foundational clustering algorithms: \textit{K-means}, \textit{Agglomerative Hierarchical Clustering Algorithm} and \textit{DBSCAN}.
@@ -212,7 +211,7 @@ Figure~\ref{fig:clustering-hierarchical-dendrogram} illustrates a Agglomerative 
 \end{figure}
 
 
-\item \textbf{Density-based clustering algorithms: DBSCAN}. Density-based algorithms cluster regions of high density and separate them from regions with lower density. The density-based approach differentiates them from the previously discussed distance-based methods. This helps them overcome limitations of the former, as they tend to perform well in the detection of spherical-shaped clusters but perform weaker at discovering arbitrary shapes.
+\item \textbf{Density-based clustering algorithms: DBSCAN}. Density-based algorithms cluster regions of high density and separate them from regions with lower density. The density-based approach differentiates them from the previously discussed distance-based methods. This helps them overcome limitations of the former, as those tend to perform well in the detection of spherical-shaped clusters but perform weaker at discovering arbitrary shapes. Density-based algorithms are also insensitive to noise points, so that outliers get isolated. DBSCAN takes a center-based approach.
 ?
 \begin{algorithm}[t]
   \While{Point is unclassified}{
@@ -226,7 +225,12 @@ Figure~\ref{fig:clustering-hierarchical-dendrogram} illustrates a Agglomerative 
   \label{alg:dbscan}
 \end{algorithm}
 
-\textit{DBSCAN} takes a center-based approach, counting all points within a radius $\epsilon$. Based on density, it classifies points as \textit{core points} if the number of points within neighborhood exceeds a threshold defined as $MinPts$. \textit{Border points} don't match the previous criterion but fall into the neighborhood of a core point. Finally \textit{noise points} are outside of any neighborhood and therefore are neither core points nor border points \cite{Varlaro08spatial, Meert06clustermaps}. 
+\textit{DBSCAN} starts with an unclassified point. Density is calculated by computing all points within a radius $\epsilon$. Based on the density, it classifies points as \textit{core points} if the number of points within neighborhood exceeds a threshold defined as $MinPts$. \textit{Border points} don't match the previous criterion but fall into the neighborhood of a core point. Finally \textit{noise points} are outside of any neighborhood and therefore are neither core points nor border points. Any core point will be expanded to a cluster in the procedure until every point has been classified~\cite{Varlaro08spatial, Meert06clustermaps}.
+
+The quadratic time complexity of DBSCAN \BigO{n^2} can be optimized by using an indexing structure for the neighborhood queries~\cite{wiki:DBSCAN}:
+\[time~complexity = \BigO{n \log{n} }\]
+
+
 
 Figure~\ref{fig:clustering-dbscan} illustrates a DBSCAN clustering process.
 
@@ -238,6 +242,7 @@ Figure~\ref{fig:clustering-dbscan} illustrates a DBSCAN clustering process.
   \end{center}
 \end{figure}
 
+\item \textbf{Grid-based algorithms: STING}. 
 
 \end{itemize}
 
