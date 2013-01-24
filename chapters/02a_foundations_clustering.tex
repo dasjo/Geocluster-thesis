@@ -65,7 +65,7 @@ Clusters are groupings of similar objects. Different models of interpretations o
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.75\textwidth]{figures/cluster_types.png}
+    \includegraphics[width=0.75\textwidth]{figures/cluster_types.pdf}
     \label{fig:clusters}
     \caption{Types of clusters: (a) Well-separated, (b) Prototype-based, (c) Graph-based, (d) Density-based~\cite[p 9]{Meert06clustermaps}.}
   \end{center}
@@ -88,7 +88,7 @@ Literature research reveals classifications of clustering techniques according t
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=1\textwidth]{figures/clustering_techniques_meert.png}
+    \includegraphics[width=1\textwidth]{figures/clustering_techniques_meert.pdf}
     \label{fig:clusters}
     \caption{A taxonomy of cluster algorithms as cited in~\cite[p 14]{Meert06clustermaps}, based on \cite{Stein05density}.}
   \end{center}
@@ -118,12 +118,12 @@ Further aspects include monothetic versus polythetic and incremental versus non-
 
 Similarity is fundamental to the definition of a cluster. In order to measure similarity, clustering algorithms evaluate their proximity. Continuous data requires different proximity measurements than categorical data.
 
-For continuos data, the proximity between items is typically quantified by dissimilarity in terms of distance measures. The three main distance functions are visualized in figure~\ref{fig:distance} and explained as follows\cite{Meert06clustermaps}:
+For continuos data, the proximity between items is typically quantified by dissimilarity in terms of distance measures. The three main distance functions are visualized in figure~\ref{fig:clustering-proximity} and explained as follows\cite{Meert06clustermaps}:
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=1\textwidth]{figures/distance.png}
-    \label{fig:distance}
+    \includegraphics[width=1\textwidth]{figures/clustering_proximity.pdf}
+    \label{fig:clustering-proximity}
     \caption{Distance measures for continuous data~\cite[p 12]{Meert06clustermaps}.}
   \end{center}
 \end{figure}
@@ -182,6 +182,17 @@ Figure \ref{fig:clustering_k-means} illustrates a K-means clustering process.
 
 \item \textbf{Agglomerative Hierarchical Clustering Algorithm}. This exemplary hierarchical clustering algorithm creates a hierarchy of nested sub clusters by serial partitioning. Its agglomerative nature makes it start with every data item as a single clusters which get merged sub-sequentially. 
 
+
+
+Figure \ref{fig:clustering-hierarchical-dendrogram} illustrates a Agglomerative Hierarchical clustering process as a dendrogram.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{figures/clustering_hierarchical_dendrogram.pdf}
+    \label{fig:clustering-hierarchical-dendrogram}
+    \caption{Dendrogram~\cite[p 20]{Meert06clustermaps}.}
+  \end{center}
+\end{figure}
 
 
 \item \textbf{DBSCAN}. 
