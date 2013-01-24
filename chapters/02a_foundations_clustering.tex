@@ -180,11 +180,28 @@ Figure \ref{fig:clustering_k-means} illustrates a K-means clustering process.
   \end{center}
 \end{figure}
 
-\item \textbf{Agglomerative Hierarchical Clustering Algorithm}. This exemplary hierarchical clustering algorithm creates a hierarchy of nested sub clusters by serial partitioning. Its agglomerative nature makes it start with every data item as a single clusters which get merged sub-sequentially. 
 
+\item \textbf{Agglomerative Hierarchical Clustering Algorithm}. This exemplary hierarchical clustering algorithm creates a hierarchy of nested sub clusters by serial partitioning. Its \textit{agglomerative} nature makes it start with every data item as a single clusters which get merged sub-sequentially. Alternatively, a \textit{divisive} hierarchical clustering would start with one cluster containing all data points and recursively split them up. At each level, a partitioning can be extracted, for example to serve as initial set of centroids for the previously discussed K-means algorithm. 
 
+The time complexity of the agglomerative hierarchical clustering algorithm is:
+\[time~complexity = \BigO{n^3}\]
 
-Figure \ref{fig:clustering-hierarchical-dendrogram} illustrates a Agglomerative Hierarchical clustering process as a dendrogram.
+\begin{algorithm}[t]
+  {Assign each point to its individual cluster}\;
+  {Compute the proximity matrix}\;
+  \While{Number of clusters is larger than one}{
+    {Merge the closest two clusters}\;
+    {Update the proximity matrix to reflect the proximity between the new cluster and the original clusters}\;
+  }
+  \caption{Agglomerative hierarchic algorithm~\cite{Meert06clustermaps}}
+  \label{agl:hierarchical}
+\end{algorithm}
+
+At the beginning of the agglomerative hierarchical clustering algorithm, each point is assigned to its own cluster. A proximity matrix is calculated that stores the distance of each pair of data item based on the chosen proximity measure.
+
+To merge the two closest clusters, different heuristics may be applied. Most importantly, \textit{single-link} hierarchical clustering algorithms measure the distance between two clusters by the \textit{minimum} distance between all pairs of items from the two clusters. In contrast, \textit{complete-link} algorithms use the \textit{maximum} distance to create compact clusters and prevent chaining effects. Other approaches are based on \textit{average linkage} or \textit{Ward's method}. After merging the clusters, the proximity matrix will be updated so it reflects the current state of the clustering process. This procedure is repeated until all clusters have been merged, each step in the loop yields a level in the hierarchical clustering~\cite{Jain88clustering, Jain99clusterreview, Meert06clustermaps}.
+
+Figure~\ref{fig:clustering-hierarchical-dendrogram} illustrates a Agglomerative Hierarchical clustering process as a dendrogram.
 
 \begin{figure}[h]
   \begin{center}
