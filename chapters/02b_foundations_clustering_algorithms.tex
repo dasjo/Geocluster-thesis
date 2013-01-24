@@ -97,7 +97,15 @@ Density-based algorithms cluster regions of high density and separate them from 
   \label{alg:dbscan}
 \end{algorithm}
 
-\textit{DBSCAN} starts with an unclassified point. Density is calculated by computing all points within a radius $\epsilon$. Based on the density, it classifies points as \textit{core points} if the number of points within neighborhood exceeds a threshold defined as $MinPts$. \textit{Border points} don't match the previous criterion but fall into the neighborhood of a core point. Finally \textit{noise points} are outside of any neighborhood and therefore are neither core points nor border points. Any core point will be expanded to a cluster in the procedure until every point has been classified~\cite{Varlaro08spatial, Meert06clustermaps}.
+\textit{DBSCAN} starts with an unclassified point. Subsequently, the density of the point is calculated by computing all its neighborhood points within a radius $\epsilon$. Based on the density, the algorithm classifies points as \textit{core points}, \textit{border points} or \textit{noise points}:
+
+\begin{itemize}
+\item \textit{core points} have a number of points within their neighborhood that exceeds the threshold defined as $MinPts$
+\item \textit{border points} don't match the previous criterion but they themselves fall into the neighborhood of another core point
+\item \textit{noise points} are outside of any neighborhood and therefore are neither core points nor border points
+\end{itemize}
+
+Any core point will be expanded to a cluster in the procedure until every point has been classified~\cite{Varlaro08spatial, Meert06clustermaps}.
 
 The quadratic time complexity of DBSCAN \BigO{n^2} can be optimized by using an indexing structure for the neighborhood queries~\cite{wiki:DBSCAN}:
 \[time~complexity = \BigO{n \log{n} }\]
@@ -114,13 +122,19 @@ Figure~\ref{fig:clustering-dbscan} illustrates a DBSCAN clustering process.
 
 \subsection{Grid-based algorithms: STING}
 
+The time complexity of the previously discussed algorithms is at least linear to the number of points that have to be clustered. Grid-based algorithms overcome this performance limitation by partitioning data to be clustered in a grid structure. The clustering process is executed on pre clustered cells which obviously scales better. STING divides the data points into a grid of rectangular cells. Every cell in the grid is sub-divided into a further partitioning one level deeper in the hierarchy. STING therefore precomputes a hierarchical index with various levels of granularity on which the clustering process is later executed.
 
+The time complexity can be shifted to the computation of the grid which is linear to the points of data $\BigO{n}$. The query processing time is reduced to $\BigO{g}$, where $g$ is the constant of number of cells at the bottom level of the computed hierarchy. As per the construction of the hierarchy, it can be assumed that $g \ll n$~\cite{Varlaro08spatial, Wang97sting}.  
 
+Figure~\ref{fig:clustering-sting} illustrates a hierarchical grid used in the STING clustering process.
 
-
-
-
-
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{figures/clustering_sting.pdf}
+    \caption{Hierarchical Structure of the STING algorithm~\cite[p 5]{Wang97sting}.}
+    \label{fig:clustering-sting}
+  \end{center}
+\end{figure}
 
 
 
