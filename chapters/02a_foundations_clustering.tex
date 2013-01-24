@@ -21,6 +21,8 @@ Clustering is a general concept that applies to multivariate data. Spatial data 
   \end{center}
 \end{figure}
 
+
+
 \subsection{The Clustering task}
 
 Clustering is the task of aggregating items (also described as features) into clusters, based on similarities or proximity. A.K. Jain, M.N. Murty and P.J. Flynn~\cite{Jain99clusterreview} define the following steps involved in a typical pattern clustering activity:
@@ -35,11 +37,15 @@ Clustering is the task of aggregating items (also described as features) into cl
 \end{enumerate}
 \end{quote}
 
+
+
 \subsection{History}
 
-K-means, one of the oldest and most widely used clustering algorithm was introduced already in 1967~\cite{MacQueen67kmeans, Meert06clustermaps}. Tryon and Bailey (1970) wrote one of the first books on cluster analysis. In 1973, Anderberg published ``Cluster analysis for applications'', a book that Jain and Dubes describe as "the most comprehensive book for those who want to use cluster analysis"~\cite{Jain88clustering}.  While Tryon and Bailey focus on a single clustering approach (BC TRY), Anderberg already gives a comprehensive overview of clustering methods, strategies and a comparative evaluation of cluster analysis methods.
+K-means, one of the oldest and most widely used clustering algorithm was introduced already in 1967~\cite{MacQueen67kmeans, Meert06clustermaps}. Tryon and Bailey (1970) wrote one of the first books on cluster analysis. In 1973, Anderberg published ``Cluster analysis for applications'', a book that Jain and Dubes describe as ``the most comprehensive book for those who want to use cluster analysis''~\cite{Jain88clustering}.  While Tryon and Bailey focus on a single clustering approach (BC TRY), Anderberg already gives a comprehensive overview of clustering methods, strategies and a comparative evaluation of cluster analysis methods.
 
 Clustering algorithms were improved and developed further over time, i.e. to account for performance issues. Prominent algorithms in that area include CLARANS~\cite{Ng94CLARANS} and BIRCH~\cite{Zhang96BIRCH} - they have a time complexity linear in the number of patterns. A popular, density based clustering algorithm is DBSCAN~\cite{Ester96DBSCAN}. Jain and Dubes summarize hierarchical and partitional clustering approaches in ``Algorithms for Clustering Data'' (1988) with a special focus on applications in image processing. Numerous subsequent publications on cluster analysis are released continuously~\cite{Jain99clusterreview}. 
+
+
 
 \subsection{Cluster types}
 
@@ -65,7 +71,10 @@ Clusters are groupings of similar objects. Different models of interpretations o
   \end{center}
 \end{figure}
 
+
+
 \subsection{Clustering techniques}
+\label{chapter:clustering-techniques}
 
 Literature research reveals classifications of clustering techniques according to various aspects. Jain, Murty and Flynn primarily group the algorithms into hierarchical and partitional ones~\cite{Jain99clusterreview}. On the other hand, Stein and Busch split them into hierarchical, iterative, density-based and meta-search-controlled~\cite{Stein05density}. The differentiation of properties into groupings of clustering techniques and cross-cutting aspects is inconsistent among publications. This again shows the wide variety in which cluster analysis is being discussed and developed.
 
@@ -102,24 +111,13 @@ An example of the relationship between hierarchical and partitional clustering i
 
 Further aspects include monothetic versus polythetic and incremental versus non-incremental clustering techniques. 
 
+
+
 \subsection{Proximity}
 
 Similarity is fundamental to the definition of a cluster. In order to measure similarity, clustering algorithms evaluate their proximity. Continuous data requires different proximity measurements than categorical data.
 
 For continuos data, the proximity between items is typically quantified by dissimilarity in terms of distance measures. The three main distance functions are visualized in figure~\ref{fig:distance} and explained as follows\cite{Meert06clustermaps}:
-
-\begin{itemize}
-
-\item \textbf{Euclidian distance}. The euclidian distance is the geometric distance in the n-dimensional space. It is is the most common type of distance and defined as
-\[ distance(x, y) = \sqrt{\sum_{i} (x_i - y_i)^2} \]
-
-\item \textbf{Manhattan distance}. The manhattan distance, also known as city-block distance is distance when walking from one point to another following the axes. Compare with walking by following a raster like in manhattan. It is defined as
-\[ distance(x, y) = \sum_{i} |x_i - y_i| \]
-
-\item \textbf{Chebychev distance}. The manhattan distance, also known as city-block distance is distance when walking from one point to another following the axes. Compare with walking by following a raster like in manhattan. It is defined as
-\[ distance(x, y) = max |x_i - y_i| \]
-
-\end{itemize}
 
 \begin{figure}[h]
   \begin{center}
@@ -129,17 +127,48 @@ For continuos data, the proximity between items is typically quantified by dissi
   \end{center}
 \end{figure}
 
+\begin{itemize}
+
+\item \textbf{Euclidian distance}. The euclidian distance is the geometric distance in the n-dimensional space. It is is the most common type of distance and defined as
+\[ distance(x, y) = \sqrt{\sum_{i} (x_i - y_i)^2} \]
+
+\item \textbf{Manhattan distance}. The manhattan distance, also known as city-block distance is distance when walking from one point to another following the axes. Compare with walking by following a raster like in manhattan. It is defined as
+\[ distance(x, y) = \sum_{i} |x_i - y_i| \]
+
+\item \textbf{Chebychev distance}. This distance measure returns the maximum distance between two points on any dimensions. It may be appropriate where two items are defined as `different', if they are different on any one of the dimensions.
+\[ distance(x, y) = max |x_i - y_i| \]
+
+\end{itemize}
+
+
+
 \subsection{Clustering algorithms}
 
+Researchers have created a multitude of algorithms, each appropriate for a certain task. As we will find out later, the requirements to the spatial clustering algorithm for this thesis are specific, which out-rules most scientific clustering algorithms which are geared towards image recognition or other disciplines. To provide an overview and to understand the basic differentiation of clustering techniques explained in \ref{chapter:clustering-techniques}, in this chapter we will introduce 3 foundational clustering algorithms: \textit{K-means}, \textit{Agglomerative Hierarchical Clustering Algorithm} and \textit{DBSCAN}.
 
+\begin{itemize}
 
+\item \textbf{K-means}. The K-means is the most commonly used and simple algorithm based on a \textit{squared error criterion}. It creates a one-level partitioning of the data items by dividing them into \textit{K} clusters. By starting with a random initial partition it iteratively reassigns the patterns to clusters based on similarity.  The clustering process is completed when a convergence criterion is met, i.e. no further reassignments happen. Clusters are defined by \textit{cluster prototypes}: the centroid of the clustered items. Alternatively, the \textit{K-medoid} algorithm uses the most representative data item instead of the centroid~\cite{Jain99clusterreview, Meert06clustermaps}.
 
+\begin{algorithm}[t]
+  \SetKwInOut{Input}{input}
+  \Input{the number of clusters, $K$}
+  \BlankLine
+  {Select $K$ points as initial centroids}\;
+  \While{Centroids do change}{
+    {Form $K$ clusters by assigning each point to its closest centroid}\;
+    {Recompute the centroid of each cluster}\;
+  }
+  \caption{K-means algorithm}\label{lag:k-means}
+\end{algorithm}
 
+ Squared error algorithms 
 
+\item \textbf{Agglomerative Hierarchical Clustering Algorithm}. 
 
+\item \textbf{DBSCAN}. 
 
-
-
+\end{itemize}
 
 
 
