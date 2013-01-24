@@ -16,8 +16,8 @@ Clustering is a general concept that applies to multivariate data. Spatial data 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.75\textwidth]{figures/clusters.png}
-    \label{fig:clusters}
     \caption{Clusters of point patterns in two dimensions~\cite[p 2]{Jain99clusterreview}.}
+    \label{fig:clusters}
   \end{center}
 \end{figure}
 
@@ -66,8 +66,8 @@ Clusters are groupings of similar objects. Different models of interpretations o
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.75\textwidth]{figures/cluster_types.pdf}
-    \label{fig:clusters}
     \caption{Types of clusters: (a) Well-separated, (b) Prototype-based, (c) Graph-based, (d) Density-based~\cite[p 9]{Meert06clustermaps}.}
+    \label{fig:clusters}
   \end{center}
 \end{figure}
 
@@ -81,16 +81,16 @@ Literature research reveals classifications of clustering techniques according t
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.9\textwidth]{figures/clustering_approaches_jain.png}
-    \label{fig:clusters}
     \caption{A taxonomy of clustering approaches.~\cite[p 275]{Jain99clusterreview}.}
+    \label{fig:clusters}
   \end{center}
 \end{figure}
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=1\textwidth]{figures/clustering_techniques_meert.pdf}
-    \label{fig:clusters}
     \caption{A taxonomy of cluster algorithms as cited in~\cite[p 14]{Meert06clustermaps}, based on \cite{Stein05density}.}
+    \label{fig:clusters}
   \end{center}
 \end{figure}
 
@@ -123,8 +123,8 @@ For continuos data, the proximity between items is typically quantified by dissi
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=1\textwidth]{figures/clustering_proximity.pdf}
-    \label{fig:clustering-proximity}
     \caption{Distance measures for continuous data~\cite[p 12]{Meert06clustermaps}.}
+    \label{fig:clustering-proximity}
   \end{center}
 \end{figure}
 
@@ -148,7 +148,7 @@ Researchers have created a multitude of algorithms, each appropriate for a certa
 
 \begin{itemize}
 
-\item \textbf{K-means}. The K-means is the most commonly used and simple algorithm based on a \textit{squared error criterion}. It creates a one-level partitioning of the data items by dividing them into \textit{K} clusters. By starting with a random initial partition it iteratively reassigns the patterns to clusters based on similarity.  The clustering process is completed when a convergence criterion is met, i.e. no further reassignments happen. Clusters are defined by \textit{cluster prototypes}: the centroid of the clustered items. Alternatively, the \textit{K-medoid} algorithm uses the most representative data item instead of the centroid.
+\item \textbf{Squared Error Algorithms: K-means}. The K-means is the most commonly used and simple algorithm based on a \textit{squared error criterion}. It creates a one-level partitioning of the data items by dividing them into \textit{K} clusters. By starting with a random initial partition it iteratively reassigns the patterns to clusters based on similarity.  The clustering process is completed when a convergence criterion is met, i.e. no further reassignments happen. Clusters are defined by \textit{cluster prototypes}: the centroid of the clustered items. Alternatively, the \textit{K-medoid} algorithm uses the most representative data item instead of the centroid.
 
 The time complexity of the K-means algorithm is linear to the number of points:
 \[time~complexity = \BigO{n}\]
@@ -163,7 +163,7 @@ The time complexity of the K-means algorithm is linear to the number of points:
     {Recompute the centroid of each cluster}\;
   }
   \caption{K-means algorithm~\cite{Meert06clustermaps}}
-  \label{lag:k-means}
+  \label{alg:k-means}
 \end{algorithm}
 
 The selection of initial centroids affects the final outcome of the clustering process. Choosing them randomly is a simple but not very affective approach which can be compensating by applying multiple runs of the algorithm to retrieve an optimal result set. Optimizations to the centroid initialization include applying a hierarchical clustering or choosing distant points in the beginning.
@@ -175,8 +175,8 @@ Figure \ref{fig:clustering_k-means} illustrates a K-means clustering process.
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.9\textwidth]{figures/clustering_k-means.png}
-    \label{fig:clustering_k-means}
     \caption{Convergence of K-means clustering: (a) initial data; (b) cluster membership after first loop; (c) cluster membership after second loop~\cite[p 99]{Jain88clustering}.}
+    \label{fig:clustering_k-means}
   \end{center}
 \end{figure}
 
@@ -194,7 +194,7 @@ The time complexity of the agglomerative hierarchical clustering algorithm is:
     {Update the proximity matrix to reflect the proximity between the new cluster and the original clusters}\;
   }
   \caption{Agglomerative hierarchic algorithm~\cite{Meert06clustermaps}}
-  \label{agl:hierarchical}
+  \label{alg:hierarchical}
 \end{algorithm}
 
 At the beginning of the agglomerative hierarchical clustering algorithm, each point is assigned to its own cluster. A proximity matrix is calculated that stores the distance of each pair of data item based on the chosen proximity measure.
@@ -206,13 +206,38 @@ Figure~\ref{fig:clustering-hierarchical-dendrogram} illustrates a Agglomerative 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.9\textwidth]{figures/clustering_hierarchical_dendrogram.pdf}
-    \label{fig:clustering-hierarchical-dendrogram}
     \caption{Dendrogram~\cite[p 20]{Meert06clustermaps}.}
+    \label{fig:clustering-hierarchical-dendrogram}
   \end{center}
 \end{figure}
 
 
-\item \textbf{DBSCAN}. 
+\item \textbf{Density-based clustering algorithms: DBSCAN}. Density-based algorithms cluster regions of high density and separate them from regions with lower density. The density-based approach differentiates them from the previously discussed distance-based methods. This helps them overcome limitations of the former, as they tend to perform well in the detection of spherical-shaped clusters but perform weaker at discovering arbitrary shapes.
+?
+\begin{algorithm}[t]
+  \While{Point is unclassified}{
+    {Find points within region $\epsilon$}\;
+    \If{number of points within region $> MinPts$} {
+      {Start new cluster with Point}\;
+      {Search regions of points in new cluster and expand cluster}\;
+    }
+  }
+  \caption{DBSCAN algorithm~\cite{Meert06clustermaps}}
+  \label{alg:dbscan}
+\end{algorithm}
+
+\textit{DBSCAN} takes a center-based approach, counting all points within a radius $\epsilon$. Based on density, it classifies points as \textit{core points} if the number of points within neighborhood exceeds a threshold defined as $MinPts$. \textit{Border points} don't match the previous criterion but fall into the neighborhood of a core point. Finally \textit{noise points} are outside of any neighborhood and therefore are neither core points nor border points \cite{Varlaro08spatial, Meert06clustermaps}. 
+
+Figure~\ref{fig:clustering-dbscan} illustrates a DBSCAN clustering process.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{figures/clustering_dbscan.pdf}
+    \caption{DBSCAN algorithm~\cite[p 26]{Meert06clustermaps}.}
+    \label{fig:clustering-dbscan}
+  \end{center}
+\end{figure}
+
 
 \end{itemize}
 
