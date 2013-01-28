@@ -48,7 +48,7 @@ Various space decomposition methods exist. They can be classified depending on t
   \end{center}
 \end{figure}
 
-The simplest polygonal space decomposition method is based on squares. It is directly related to the Morton and Peano-Hilbert space order methods as described in the previous chapter \ref{chapter:space-order}. Both orders work in a hierarchical manner and visit entire sub-quadrants first before continuing further. This is why they are predestined to decomposing space into squares as indicated in Figures~\ref{fig:space-orders}~and~\ref{fig:space-decompositions}. Understanding the basic concepts of space orders and space decomposition allows us to introduce TODO / Geohash.
+The simplest polygonal space decomposition method is based on squares. It is directly related to the Morton and Peano-Hilbert space order methods as described in the previous chapter \ref{chapter:space-order}. Both orders work in a hierarchical manner and visit entire sub-quadrants first before continuing further. This is why they are predestined to decomposing space into squares as indicated in Figures~\ref{fig:space-orders}~and~\ref{fig:space-decompositions}.
 
 \subsection{Quadtree}
 
@@ -63,5 +63,57 @@ Quadtrees are hierarchical data structures based on recursive decomposition of s
 \end{figure}
 
 Quadtrees can be constructed in different ways. A top-down approach implements the Morton order which maps the multidimensional data to one dimension and has been introduced in chapter~\ref{chapter:space-order}. Also note that the term quadtree has taken various meanings: actually it is a trie (or digital tree) structure because each data key is a sequence of characters. ``A node at depth $i$ in the trie represents an $M$-way branch depending on the $i$-th character'' \cite{Samet90spatialdata}.
+
+\subsection{Geohash}
+\label{chapter:geohash}
+
+Geohash is a latitude/longitude geocode system based on the Morton order, described in \ref{chapter:space-order}. It encodes geographic point coordinates into string identifiers that reflect a hierarchical spatial structure. Its gradual precision degradation property means that if two geohashes share a common prefix, their closeness is described by the length of the shared prefix~\cite{wiki:geohash, Smiley11geohash}.
+
+Originally, the geohash encoding algorithm has been developed and put into the public domain by Gustavo Niemeyer when creating the web service \href{http://geohash.org}{geohash.org}. The service allows to encode spatial coordinates into unique string identifiers and vice versa~\cite{wiki:geohash}. Amongst other applications, it has also been incorporated into geospatial search plugins of the Apache Solr search platform~\cite{Smiley11geohash} and leveraged for real-time, location-aware collaborative filtering of web content by HP Labs~\cite{Sand11geohashapp}.
+
+A geohash is constructed by interleaving the bits of the latitude and longitude values and converting them into a string of characters using a Base 32 encoding. As every Base 32 symbol is represented by an uneven number of 5 bits, the resulting  space decomposition is a rectangular grid formed by $4 \times 8$ or $8 \times 4$ cells. The orientation of the resulting rectangles alternates between vertical for characters of an odd index and horizontal for such characters that are positioned at an even index within the geohash. Figure \ref{fig:geohash} illustrates how the first character of a geohash string splits the projected earth into an $8 \times 4$ grid of horizontally aligned rectangles~\cite{wiki:geohash, Smiley11geohash}.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{figures/geohash_example.png}
+    \label{fig:geohash}
+    \caption{Space decomposition of the geohash algorithm on the first level~\cite{Smiley11geohash}.}
+  \end{center}
+\end{figure}
+
+The fact that points with a common prefix are near each other must not be confused with the converse. Due to the nature of the morton order, edge cases exist. Two points may be very close to each other, without sharing an equally long prefix. Figure \ref{fig:geohash-edge} illustrates and example of two points being located within different geohashes. The first point being at the very lower end of the ``DRT'' geohash and second point positioned closely at the upper end of ``DRM'' geohash. 
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{figures/geohash_edges.pdf}
+    \label{fig:geohash-edge}
+    \caption{Space decomposition of the geohash algorithm on the first level~\cite{Smiley11geohash}.}
+  \end{center}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
