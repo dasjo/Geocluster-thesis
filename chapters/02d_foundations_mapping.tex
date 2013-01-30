@@ -21,8 +21,8 @@ The \textit{spherical mercator projection} is the most commonly used web mapping
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.5\textwidth]{figures/tissot_mercator.png}
-    \label{fig:mercator}
     \caption{Tissot's indicatrix visualizes enlarged areas towards the poles when using the mercator projection~\cite{wiki:mercator}.}
+    \label{fig:mercator}
   \end{center}
 \end{figure}
 
@@ -39,22 +39,20 @@ In mapping, a coordinate system is used when representing locations in a numeric
 
 \end{itemize}
 
-In classic mapping applications, latitude and longitude are measured in degrees, minutes and seconds of the sphere. New York City is at $40^\circ$ $43'$ $0''$ North, $74^\circ$ $0'$ $0''$ West. For computational purposes, web mapping is largely based on a decimal degree representation of such values. The equivalent for New York in that case is the pair of $40.716667, -74$.
+In classic mapping applications, latitude and longitude values are measured in degrees, minutes and seconds of the sphere. New York City is located at $40^\circ$ $43'$ $0''$ North, $74^\circ$ $0'$ $0''$ West. For computational purposes, web mapping is largely based on a decimal degree representation of such values. The equivalent decimal degree value for New York in that case is the pair of $40.716667, -74$.
 
-A common pitfall in web mapping is the order of latitude and longitude values. The order of latitude before longitude seems to be standard, unfortunately it places the vertical position before the horizontal. This contradicts with classic Cartesian x,y coordinate systems and often leads to confusion when dealing with mapping APIs~\cite{Zzolo11mappingdrupal}. 
-
-\cite{asd}
+A common pitfall in web mapping is mixing up the order of latitude and longitude values. Having latitude before longitude is the standard, which means to state the vertical position before the horizontal. This contradicts with classic Cartesian x,y coordinate systems and often leads to confusion. Some mapping APIs expect latitude first, while others are designed to begging with longitude values~\cite{Zzolo11mappingdrupal}. 
 
 
 \subsection{The Web Mapping Stack}
 
-The primary purpose of web mapping applications is to deliver spatial data in the form of a map to the user. 
+The primary purpose of web mapping applications is to deliver spatial data in the form of a map to the user. Modern, interactive web mapping applications are based on a concept named \textit{slippy maps}. Slippy maps are displayed in a rectangular viewport within the browser handled by a javascript mapping library. The map is visualized dynamically by rendering layers of raster and vector data on top of each other. In addition, slippy maps provide means of interaction to the user such as panning and zooming to update and explore the map. Figure \ref{fig:web-mapping-stack} illustrates the prototype of such a modern web mapping application. Its components will be discussed in the following section.
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=1\textwidth]{figures/web_mapping_stack.pdf}
-    \label{fig:mercator}
-    \caption{Illustration of the web mapping stack. Includes a tile graphic from~\cite{web:cubeservtiles}.}
+    \caption{Illustration of a modern web mapping application. Includes a tile graphic from~\cite{web:cubeservtiles}.}
+    \label{fig:web-mapping-stack}
   \end{center}
 \end{figure}
 
