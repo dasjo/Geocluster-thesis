@@ -25,13 +25,23 @@ The \textit{spherical mercator projection} is the most commonly used web mapping
     \caption{Tissot's indicatrix visualizes enlarged areas towards the poles when using the mercator projection~\cite{wiki:mercator}.}
   \end{center}
 \end{figure}
-   
 
 
+\subsection{Coordinates}
 
+In mapping, a coordinate system is used when representing locations in a numeric way. The primary way to store coordinates of locations is a pair of \textit{latitude} and \textit{longitude} values. 
 
+\begin{itemize}
 
+\item \textbf{Latitude} classifies the angular distance towards north and south from the equator which is at $0^\circ$. Positive latitude values represent the northern hemisphere up the the pole at $90^\circ$. Negative values are located below equator where the south pole marks the lower limit at $-90^\circ$.
 
+\item \textbf{Longitude} denotes the angular distance towards west and east. It's zero-mark is a latitude of $0^\circ$  which runs north-south through the Royal Observatory at Greenwich in the UK. In contrast to latitude values, the longitude encloses a whole circle around the earth. Negative values down to $180^\circ$ are located west and positive values up to $180^\circ$ are positioned east of Greenwhich.
+
+\end{itemize}
+
+In classic mapping applications, latitude and longitude are measured in degrees, minutes and seconds of the sphere. New York City is at $40^\circ$ $43'$ $0''$ North, $74^\circ$ $0'$ $0''$ West. For computational purposes, web mapping is largely based on a decimal degree representation of such values. The equivalent for New York in that case is the pair of $40.716667, -74$.
+
+A common pitfall in web mapping is the order of latitude and longitude values. The order of latitude before longitude seems to be standard, unfortunately it places the vertical position before the horizontal. This contradicts with classic Cartesian x,y coordinate systems and often leads to confusion when dealing with mapping APIs~\cite{Zzolo11mappingdrupal}. 
 
 
 
