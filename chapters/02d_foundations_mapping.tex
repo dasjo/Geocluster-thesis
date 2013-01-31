@@ -12,20 +12,32 @@ Recently, Google Maps\footnote{\url{http://maps.google.com}} has made digital ma
 
 Web mapping describes the whole process of designing, implementing, generating and delivering maps on the internet. It applies theoretical foundations from web cartography to the technical possibilities and boundaries of constantly evolving web technologies. The continuous development of related technologies has created a wide variety of \textit{types of web maps}: from analytic, animated, collaborative and dynamically created web maps to online atlases, realtime and static web maps~\cite{wiki:web-mapping}.
 
+
 \subsection{Map Projections}
 
-The planet earth is a roughly spherical geoid. In order to represent it on flat computer screens, the surface of the earth needs to be translated to a plane. This is realized by applying the method of a map projection. Choosing a map projection influences how shapes, areas, directions and distances will be preserved or distorted. As no projection can optimize all those factors at once, choosing the right projection depends on the purpose of the map.
-
-The \textit{spherical mercator projection} is the most commonly used web mapping projection. It preserves shapes and direction, but does this at the cost of enlarging areas towards the poles. This distortion can be visualized by Tissot's indicatrix. Figure \ref{fig:mercator} shows how circles of the same relative size get extrapolated off the equator by using the mercator projection~\cite{Zzolo11mappingdrupal, wiki:web-mapping}. 
+The planet Earth is a roughly spherical geoid. In order to represent it on flat computer screens, the surface of the Earth needs to be translated to a plane. This is realized by applying the method of a map projection which projects the bended, three-dimensional surface of the Earth onto a two-dimensional projection surface. The shape of such a projection surface defines different possibilities of projection types as \textit{planar}, \textit{conical} and \textit{cylindrical}. See figure \ref{fig:map-projection-types} for a visual comparison of map projection types.
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.5\textwidth]{figures/tissot_mercator.png}
+    \includegraphics[width=0.75\textwidth]{figures/map_projection_types}
+    \caption{Types of map projections~\cite[p 28]{Kupper2005lbs}.}
+    \label{fig:map-projection-types}
+  \end{center}
+\end{figure}
+
+Flattening the curved surface of the Earth distortion of different kinds including areal, angular, scale, distance and direction distortion. Choosing a map projection influences which degree and combination of distortion will be caused. As no projection can optimize all those factors at once, choosing the right projection depends on the purpose of the map.
+
+The \textbf{spherical mercator projection} is the most commonly used web mapping projection. Based on a normal cylindrical projection, it preserves local shapes and direction, but does this at the cost of enlarging areas towards the poles. As an example Greenland appears on a Mercator map larger than South America, its actual size is on $1/8$ though. The effect of this distortion can be visualized by Tissot's indicatrix. Figure \ref{fig:mercator} shows how circles of the same relative size get extrapolated off the equator by using the mercator projection~\cite{Zzolo11mappingdrupal, wiki:web-mapping, Kupper2005lbs}. 
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.65\textwidth]{figures/tissot_mercator.png}
     \caption{Tissot's indicatrix visualizes enlarged areas towards the poles when using the mercator projection~\cite{wiki:mercator}.}
     \label{fig:mercator}
   \end{center}
 \end{figure}
 
+Many countries have developed their own coordinate systems to reproduce the geographic regions within their territory in an appropriate manner. Standardization efforts go towards using the \textit{Universal Transverse Mercator} projection. To avoid large distortions, it comprises a series of Transversal Mercator projections which creates separate grid zones with their own projection. This has the benefit of universally representing areas in a more exact way. On the other hand, coordinates have to be referenced including the zones in which they are located in~\cite{Kupper2005lbs}.
 
 \subsection{Coordinates}
 
@@ -46,7 +58,9 @@ A common pitfall in web mapping is mixing up the order of latitude and longitude
 
 \subsection{The Web Mapping Stack}
 
-The primary purpose of web mapping applications is to deliver spatial data in the form of a map to the user. Modern, interactive web mapping applications are based on a concept named \textit{slippy maps}. Slippy maps are displayed in a rectangular viewport within the browser handled by a javascript mapping library. The map is visualized dynamically by rendering layers of raster and vector data on top of each other. In addition, slippy maps provide means of interaction to the user such as panning and zooming to update and explore the map. Figure \ref{fig:web-mapping-stack} illustrates the prototype of such a modern web mapping application. Its components will be discussed in the following section.
+The primary purpose of web mapping applications is to deliver spatial data in the form of a map to the user. Modern, interactive web mapping applications are based on a concept named \textit{slippy maps}. These maps are brought to the user by a combination of client- and server-side technologies. 
+
+Slippy maps are displayed in a rectangular viewport within the browser handled by a javascript mapping library. The map is visualized dynamically by rendering layers of raster and vector data on top of each other. In addition, slippy maps provide means of interaction to the user such as panning and zooming to update and explore the map. Figure \ref{fig:web-mapping-stack} illustrates the prototype of such a modern web mapping application. Its components will be discussed in the following section.
 
 \begin{figure}[h]
   \begin{center}
@@ -57,9 +71,15 @@ The primary purpose of web mapping applications is to deliver spatial data in th
 \end{figure}
 
 
+\begin{itemize}
+
+\item \textbf{Latitude} classifies the angular distance towards north and south from the equator which is at $0^\circ$. Positive latitude values represent the northern hemisphere up the the pole at $90^\circ$. Negative values are located below equator where the south pole marks the lower limit at $-90^\circ$.
 
 
+\end{itemize}
 
+
+\cite{Miler10webis}
 
 
 
