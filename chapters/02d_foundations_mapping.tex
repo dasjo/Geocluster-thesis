@@ -91,43 +91,11 @@ Two main representation types for spatial objects such as buildings, roads and o
 
 Simple points can be easily expressed as pairs of latitude, longitude values and stored within two separate columns within a database. More complex shapes like polygons require different data storage types, such as \textit{Well Known Text} (WKT) and \textit{Keyhole Markup Language} (KML).
 
-\item \textbf{Raster data} represents and stores geospatial data as a grid of pixels that forms a continuos surface. Most commonly used for satellite imaginary it is also popular for storing and delivering pre-rendered vector data as tiled images. The arrangement of adjacent pixels intrinsically defines the spatial location of shapes within the raster image in relation to an externally defined reference system.
+\item \textbf{Raster data} represents and stores geospatial data as a grid of pixels that forms a continuos surface. It is most commonly used for satellite imaginary. The arrangement of adjacent pixels intrinsically defines the spatial location of shapes within the raster image in relation to an externally defined reference system.
 
-The pixel values of the raster image usually depict a visual representation of the contained area, but they can also be assigned a specific meaning: The \textit{digital elevation model} (DEM) for example described the average elevation of the mapped area per pixel.
-
-\end{itemize}
-
-~\cite{Kupper2005lbs, Zzolo11mappingdrupal}
-
-\subsection{The Web Mapping Stack}
-
-The primary purpose of web mapping applications is to deliver spatial data in the form of a map to the user. Modern, interactive web mapping applications are based on a concept named \textit{slippy maps}. These maps are brought to the user by a combination of client- and server-side technologies. 
-
-Slippy maps are displayed in a rectangular viewport within the browser handled by a javascript mapping library. The map is visualized dynamically by rendering layers of raster and vector data on top of each other. In addition, slippy maps provide means of interaction to the user such as panning and zooming to update and explore the map. Figure \ref{fig:web-mapping-stack} illustrates the prototype of such a modern web mapping application. Its components will be discussed in the following section.
-
-\begin{figure}[h]
-  \begin{center}
-    \includegraphics[width=1\textwidth]{figures/web_mapping_stack.pdf}
-    \caption{Illustration of a modern web mapping application. Includes a tile graphic from~\cite{web:cubeservtiles}.}
-    \label{fig:web-mapping-stack}
-  \end{center}
-\end{figure}
-
-
-\begin{itemize}
-
-\item \textbf{Latitude} classifies the angular distance towards north and south from the equator which is at $0^\circ$. Positive latitude values represent the northern hemisphere up the the pole at $90^\circ$. Negative values are located below equator where the south pole marks the lower limit at $-90^\circ$.
-
+The pixel values of the raster image usually depict a visual representation of the contained area, but they can also be assigned a specific meaning: The \textit{digital elevation model} (DEM) for example is used to describe the average elevation of the mapped area on a per-pixel-basis. Raster images are also often generated from vector data by a tile renderer to create base layers for maps~\cite{Kupper2005lbs, Zzolo11mappingdrupal}.
 
 \end{itemize}
-
-
-\cite{Miler10webis}
-
-
-
-
-
 
 
 

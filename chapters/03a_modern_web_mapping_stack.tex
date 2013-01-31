@@ -1,0 +1,41 @@
+
+%
+% foundations - mapping
+%
+
+\section{A Modern Web Mapping Stack}
+
+The primary purpose of web mapping applications is to deliver spatial data in the form of a map to the user. Modern, interactive web mapping applications are based on a concept named \textit{slippy maps}. These maps are brought to the user by a combination of client- and server-side technologies. Figure \ref{fig:web-mapping-stack} illustrates the prototype of such a modern web mapping application. Its components will be discussed in the following section.
+
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{figures/web_mapping_stack.pdf}
+    \caption{Illustration of a modern web mapping application. Includes a tile graphic from~\cite{web:cubeservtiles}.}
+    \label{fig:web-mapping-stack}
+  \end{center}
+\end{figure}
+
+
+\begin{itemize}
+
+\item A \textbf{slippy map} is displayed to the user in a rectangular viewport within the browser and handled by a JavaScript mapping library. The map is visualized dynamically by rendering layers of raster and vector data on top of each other. In addition, the slippy map provides means of interaction to the user such as panning and zooming to update and explore the map. 
+
+\item A \textbf{JavaScript mapping library} is in charge of rendering the slippy map by positioning one or multiple layers on top of each other. Usually, a base layer of raster data is combined with a vector data layer on top of it.
+
+\item A \textbf{tile server} provides static, sliced-up images of the raster image data which the JavaScript mapping library requests on demand, based on the current viewport. When the users performs actions like dragging and zooming on the map, the current viewport will get changed. The JavaScript library then requests additional data from the server if needed and updates the map accordingly. This live-updating process is also referred to as \textit{Bounding Box Strategy} (BBOX Strategy)\footnote{\url{http://openlayers.org/dev/examples/strategy-bbox.html}}.
+
+\item A \textbf{feature server} provides vector data to the JavaScript mapping library in an analogous way as the tile server does. Note the difference: while raster data will be displayed directly as an image, the vector data gets rendered on the client-side. To provide dynamic data, the feature server usually relies on a \textit{spatial database}. 
+
+\end{itemize}
+
+
+\cite{Miler10webis}
+
+
+
+
+
+
+
+
