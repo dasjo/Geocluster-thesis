@@ -1,9 +1,10 @@
 
 %
-% foundations - mapping
+% state - mapping stack
 %
 
 \section{A Modern Web Mapping Stack}
+\label{chapter:web-mapping-stack}
 
 The primary purpose of web mapping applications is to deliver spatial data in the form of a map to the user. Modern, interactive web mapping applications are based on a concept named \textit{slippy maps}. These maps are brought to the user by a combination of client- and server-side technologies. Figure \ref{fig:web-mapping-stack} illustrates the prototype of such a modern web mapping application. Similar mapping stacks are documented in 
 \cite{Schuetze07smart, mitchell2008web, Miler10webis, McArdle10arch}. Its components will be discussed in the following section.
@@ -28,7 +29,7 @@ Current JavaScript mapping libraries include \textit{OpenLayers}\footnote{\url{h
 
 \item A \textbf{tile server} provides static, sliced-up images of the raster image data which the JavaScript mapping library requests on demand, based on the current viewport. When the users performs actions like dragging and zooming on the map, the current viewport will get changed. The JavaScript library then requests additional data from the server if needed and updates the map accordingly. This live-updating process is also referred to as \textit{Bounding Box Strategy} (BBOX Strategy)\footnote{\url{http://openlayers.org/dev/examples/strategy-bbox.html}}. Standards for consuming tiles include \textit{Web Map Service} (WMS)\footnote{\url{http://en.wikipedia.org/wiki/Web_Map_Service}} and \textit{Tile Map Service} (TMS)\footnote{\url{http://en.wikipedia.org/wiki/Tile_Map_Service}}.
 
-A typical tile set represents $256 \times 256$ pixel tiles of the whole world at 18 zoom levels. The fact that this leads to billions of tiles has created its own line of businesses including \textit{Google Maps}\footnote{\url{http://maps.google.com/}}, \textit{Stamen}\footnote{\url{http://maps.stamen.com/}} and \textit{MapBox}\footnote{\url{http://mapbox.com//}}.
+A typical tile set represents $256 \times 256$ pixel tiles of the whole world at 18 zoom levels. The fact that this leads to billions of tiles has created its own line of businesses. Map providers like \textit{Google Maps}\footnote{\url{http://maps.google.com/}} and \textit{Stamen}\footnote{\url{http://maps.stamen.com/}} both offer default base layers and also allow users to create their own custom tile sets. \textit{TileMill}\footnote{\url{http://mapbox.com/tilemill/}} is an open source project that allows users to design their own custom maps using a design studio. The resulting maps can either be self-hosted on a server by using its complement \textit{TileStream}\footnote{\url{https://github.com/mapbox/tilestream}} or imported into \textit{MapBox Hosting}\footnote{\url{http://mapbox.com/hosting}}.  
 
 \item A \textbf{feature server} provides vector data to the JavaScript mapping library in an analogous way as the tile server does. Note the difference: while raster data will be displayed directly as an image, the vector data gets rendered on the client-side.
 

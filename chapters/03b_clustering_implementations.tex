@@ -1,0 +1,56 @@
+
+%
+% state - mapping stack
+%
+
+\section{Clustering implementations in Web Mapping}
+
+Clustering in web mapping affects the way how vector data is processed and represented to the user.  According to the web mapping stack described in \ref{chapter:web-mapping-stack} we can differentiate between client-side and server-side clustering. A server-side clustering implementation will cluster the data already before sending it over the network to the browser client. In a client-side clustering implementation, the client receives the unclustered data set from the server and clusters it on its own.
+
+\subsection{Client-side clustering in Web Mapping}
+
+When clustering on the client-side, the JavaScript mapping library receives the entire, unclustered data set and executes a clustering algorithm before visualizing the data to the user.
+
+Client-side clustering is convenient because of several reasons. The clustering task can be abstracted from the server without the need to account for server-side implementation details. It also relieves the server from performing the clustering task which can positively influence scalability. Executing the clustering task on the client-side also allows for better interaction, the user may zoom into or expand clusters without the need for an additional request to the server. 
+
+On the other hand, client-side clustering forces the server to deliver the entire data set. This also means that a bigger amount of data has to be transferred over the network. Subsequently, the client needs to cope with receiving the larger data set and takes over the burden of clustering the data. 
+
+\begin{itemize}
+
+\item The \textbf{Leaflet.markercluster}\footnote{\url{https://github.com/Leaflet/Leaflet.markercluster/}} library provides animated marker clustering for the Leaflet javascript mapping library. It combines the \textit{agglomerative hierarchical clustering algorithm} with a \textit{distance grid} (see chapters \ref{chapter:clustering-hierarchical} and \ref{chapter:clustering-grid}). The library features advanced cluster visualization techniques for representing shapes of clustered items and animations. When the user changes zooms into the map, clusters get expanded in a visual way and they collapse in the opposite direction.
+
+Leaflet.markercluster leverages the advantages of being a client-side implementation by implementing a \textit{hierarchical clustering} approach that precalculates the clusters for all zoom levels. The markers are inserted into a distance grid on the lowest zoom level. The grid is then used to check for overlapping neighbors. If the inserted marker needs to get merged, this information is automatically propagated to upper levels within the hierarchy. Otherwise, the same checking procedure will be repeated for the inserted marker on the next, upper level.
+
+The cluster visualization of Leaflet.markercluster is supported by the \textit{QuickHull}\footnote{\url{http://en.wikipedia.org/wiki/QuickHull/}} algorithm to compute the enclosing \textit{convex hull} of the clustered points as illustrated in b) in figure \ref{fig:leaflet}. In addition, a \textit{spiderfier} algorithm allows the user to select clustered points, even if they are positioned very closely to each other, see a) in figure \ref{fig:leaflet}.
+
+The clustering task is computed in \textit{linear time} to the number of markers $n$ and the usually constant number of zoom levels. 
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{figures/leaflet.pdf}
+    \caption{Two screenshots taken from the Leaflet.markercluster example map: a) spiderfied representation to select from multiple overlapping points and b) the visualized convex hull of a cluster indicates the real shape of the cluster on mouse-hover.}
+    \label{fig:leaflet}
+  \end{center}
+\end{figure}
+
+\item The \textbf{OpenLayers Cluster Strategy}\footnote{\url{http://dev.openlayers.org/releases/OpenLayers-2.12/lib/OpenLayers/Strategy/Cluster.js}} is included in the OpenLayers library and provides a simple \textit{distance-based} client-side clustering.
+
+When creating the clustering, the features are sequentially inserted. Every new feature is compared against all existing clusters. If the new feature overlaps with any cluster, it will get merged into the existing cluster. Otherwise, the feature is inserted as its own cluster. Once the data, viewport or zoom level changes, the clustering process will be re-initiated. 
+
+The sequential insertion and the comparison to all existing clusters leads to a \textit{factorial time complexity} of the algorithm. 
+
+\item \textbf{k-means clustering}\footnote{\url{http://polymaps.org/ex/kmeans.js}} is a clustering library for the \textit{Polymaps} JavaScript mapping library. It leverages the k-means squared error algorithm discussed in chapter \ref{chapter:k-means} to create clusters in linear time. As discussed, the k-means algorithm computes in \textit{linear time}.
+
+\item 
+\end{itemize}
+
+Other client-side clustering libraries evaluated can be classified similarly to the previously discussed ones. Grid-based approaches similar to Leaflet.markercluster include the Clustr library\footnote{\url{https://github.com/mapbox/clustr}} for Modest Maps and Clusterer2\footnote{\url{http://www.acme.com/javascript/\#Clusterer}} for Google Maps. MarkerClustererPlus for Google Maps V3\footnote{\url{http://code.google.com/p/google-maps-utility-library-v3/wiki/Libraries\#MarkerClusterer}} takes an approach similar to the OpenLayers Cluster Strategy.
+
+TODO: conclusion
+
+\subsection{Server-side clustering in Web Mapping}
+
+
+
+
+

@@ -14,6 +14,7 @@ Researchers have created a multitude of algorithms, each appropriate for a certa
 \end{itemize}
 
 \subsection{Squared Error Algorithms: K-means}
+\label{chapter:k-means}
 
 The K-means is the most commonly used and simple algorithm based on a \textit{squared error criterion}. It creates a one-level partitioning of the data items by dividing them into \textit{K} clusters. By starting with a random initial partition it iteratively reassigns the patterns to clusters based on similarity.  The clustering process is completed when a convergence criterion is met, i.e. no further reassignments happen. Clusters are defined by \textit{cluster prototypes}: the centroid of the clustered items. Alternatively, the \textit{K-medoid} algorithm uses the most representative data item instead of the centroid.
 
@@ -49,6 +50,7 @@ Figure \ref{fig:clustering_k-means} illustrates a K-means clustering process.
 
 
 \subsection{Agglomerative Hierarchical Clustering Algorithm}
+\label{chapter:clustering-hierarchical}
 
 This exemplary hierarchical clustering algorithm creates a hierarchy of nested sub clusters by serial partitioning. Its \textit{agglomerative} nature makes it start with every data item as a single clusters which get merged sub-sequentially. Alternatively, a \textit{divisive} hierarchical clustering would start with one cluster containing all data points and recursively split them up. At each level, a partitioning can be extracted, for example to serve as initial set of centroids for the previously discussed K-means algorithm. 
 
@@ -121,6 +123,7 @@ Figure~\ref{fig:clustering-dbscan} illustrates a DBSCAN clustering process.
 \end{figure}
 
 \subsection{Grid-based algorithms: STING}
+\label{chapter:clustering-grid}
 
 The time complexity of the previously discussed algorithms is at least linear to the number of points that have to be clustered. Grid-based algorithms overcome this performance limitation by partitioning data to be clustered in a grid structure. The clustering process is executed on pre clustered cells of the grid structure, which obviously scales better.
 
