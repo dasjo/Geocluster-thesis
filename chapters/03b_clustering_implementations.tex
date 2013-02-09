@@ -68,6 +68,18 @@ While client-side clustering solutions are standardized towards available JavaSc
 \end{itemize}
 
 
+Other server-side clustering implementations have been evaluated briefly:
+
+On the \textbf{database-layer}, \textit{SQLDM - implementing k-means clustering using SQL} describes a linear-time implementation of the k-means clustering algorithm in \textit{MySQL}\cite{Simha07sqldm}.
+ The \textit{PostGIS} spatial extension for the \textit{PostreSQL} database provides grid-based clustering via \textit{ST\_SnapToGrid}\footnote{\url{http://postgis.refractions.net/docs/ST_SnapToGrid.html}}. Also, a k-means module\footnote{\url{http://pgxn.org/dist/kmeans/doc/kmeans.html}} (also see \footnote{\url{http://gis.stackexchange.com/questions/11567/spatial-clustering-with-postgis}}) and documentation for clustering indices based on \textit{Geohash} \footnote{\url{http://workshops.opengeo.org/postgis-intro/clusterindex.html\#clustering-on-geohash}} for PostGIS exist.
+
+Further, \textbf{application-layer} clustering implementations are grid- and distance-based clustering for Google Maps in PHP\footnote{\url{http://www.appelsiini.net/2008/11/introduction-to-marker-clustering-with-google-maps}}. Vizmo is a research project that developed a server-side clustering component in PHP, Symfony2 and MySQL, (TODO check if code is published yet)\footnote{\url{http://www.globalimpactstudy.org/wp-content/uploads/2011/12/vizmo-poster.pdf}}. Beyond the primary scope of PHP applications, a Flex-based clustering implementation has been developed for ArcGIS server\footnote{\url{http://thunderheadxpler.blogspot.co.at/2008/12/clustering-20k-map-points.html}}. ClusterPy\footnote{\url{http://www.rise-group.org/risem/clusterpy/index.html}} is a library of spatially constrained clustering algorithms in Python and SGCS\footnote{\url{http://cran.r-project.org/web/packages/SGCS/}} is a package to build graph based clustering summaries for spatial point patterns in R.
+
+
+
+
+
+
 
 
 
