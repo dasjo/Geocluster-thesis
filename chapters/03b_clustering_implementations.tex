@@ -7,13 +7,15 @@
 
 Clustering in web mapping affects the way how vector data is processed and represented to the user.  According to the web mapping stack described in \ref{chapter:web-mapping-stack} we can differentiate between client-side and server-side clustering. A server-side clustering implementation will cluster the data already before sending it over the network to the browser client. In a client-side clustering implementation, the client receives the unclustered data set from the server and clusters it on its own.
 
-\subsection{Client-side clustering in Web Mapping}
-
-When clustering on the client-side, the JavaScript mapping library receives the entire, unclustered data set and executes a clustering algorithm before visualizing the data to the user.
+\textbf{Client-side vs. server-side clustering}
 
 Client-side clustering is convenient because of several reasons. The clustering task can be abstracted from the server without the need to account for server-side implementation details. It also relieves the server from performing the clustering task which can positively influence scalability. Executing the clustering task on the client-side also allows for better interaction, the user may zoom into or expand clusters without the need for an additional request to the server. 
 
-On the other hand, client-side clustering forces the server to deliver the entire data set. This also means that a bigger amount of data has to be transferred over the network. Subsequently, the client needs to cope with receiving the larger data set and takes over the burden of clustering the data. 
+On the other hand, client-side clustering forces the server to deliver the entire data set. This also means that a bigger amount of data has to be transferred over the network. Subsequently, the client needs to cope with receiving the larger data set and takes over the burden of clustering the data.
+
+\subsection{Client-side clustering in Web Mapping}
+
+When clustering on the client-side, the JavaScript mapping library receives the entire, unclustered data set and executes a clustering algorithm before visualizing the data to the user.
 
 \begin{itemize}
 
@@ -49,6 +51,33 @@ Other client-side clustering libraries evaluated can be classified similarly to 
 TODO: conclusion
 
 \subsection{Server-side clustering in Web Mapping}
+
+Server-side implementations cluster the data already before sending it over the network to the client.
+
+While client-side clustering solutions are standardized towards available JavaScript mapping libraries, this doesn't apply to server-side implementations. Clustering on the server-side can be performed both on the database and/or application layer. The wide variety of tools involved in the server-side mapping stack from different spatial databases and programming languages seems to make it harder to establish off-the-shelf libraries for server-side clustering, as they always need to be integrates into an architecture specific to the use case.
+
+
+\begin{itemize}
+
+\item \textbf{Clustering maps} by Wannes Meert is the only scientific publication found that explores server-side clustering for web mapping. The study compares strengths and weaknesses of three different approaches (\textit{K-means}, \textit{Hierarichal clustering} and \textit{DBSCAN}) and finally implements density-based clustering. The solution is based on the \textit{DBSCAN} algorithm and uses the \text{R-tree} as indexing structure to speed up neighborhood searches. It is implemented and documented as a \textit{PHP server-side script}. The time complexity of the implemented and discussed final algorithm is quasilinear: $\BigO{n \log{n}}$ and the demonstration page\footnote{\url{http://www.wannesm.be/maps/}} asserts a clustering time of $\sim 1$ second for only 525 points~\cite{Meert06clustermaps}.
+
+\item \textbf{Google Maps Hacks: Tips and Tools for Geographic Searching and Remixing} is a book that contains a section \textit{Hack 69. Cluster Markers at High Zoom Levels} that discussed various approaches to server-side cluster markers for Google Maps. The chapter evaluates different approaches from a quadratic-time $\BigO{n^2}$ implementation of the \textit{k-means} algorithm over a even worse cubic-time $\BigO{n^3}$, \textit{hierarchical clustering} approach. Finally, a \textit{naive grid-based clustering} solution is developed and documented as a \textit{CGI Perl Script} which is stated to perform in linear time $\BigO{n}$~\cite{Gibson06Gmapshacks}.
+
+\item \textbf{Geoclustering}\footnote{\url{https://github.com/ahtih/Geoclustering}} is a Drupal 6 module designed to ``scale to 100 000+ markers''. By maintaining a cluster tree in a separate database table, it essentially pre-calculates clusters. Similar to the grid-based clustering algorithm \textit{Sting} described in \ref{chapter:clustering-grid}, by shifting the clustering complexity to the calculation of the cluster tree, queries can be performed in constant time, only linear to the number of grids $\BigO{g}$. This speed improvement is reduces the possibilities of dynamic filtering to bounding-box filters only. Filters on other properties of the indexed data would need to be pre-calculated into a more complex or separate cluster trees. 
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
