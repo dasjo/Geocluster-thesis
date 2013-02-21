@@ -8,6 +8,7 @@
 
 The two main objectives stated in chapter \ref{chapter:objectives} are 1) \textit{performance} and 2) \textit{integration and extensibility}. Together they define the target of creating an integrated solution for server-side clustering in Drupal with a clear focus on enhancing the performance of data-intense maps.
 
+
 \subsection{Algorithm considerations}
 
 By the definition of clustering foundations explained in \ref{chapter:foundations-clustering}, a number of factors need to be considered when designing the clustering algorithm. For the clustering task, a \textit{pattern representation} method, a \textit{proximity measure} and the \textit{clustering algorithm} itself need to be defined. In addition, the \textit{cluster type} and the right choice of \textit{clustering techniques} have to be considered. The following enumeration discusses the considerations for the named factors, with one exception: the applied clustering techniques will be discussed in combination with the actual algorithm in chapter \ref{chapter:algorithm}. 
@@ -24,19 +25,30 @@ By the definition of clustering foundations explained in \ref{chapter:foundation
 
 \end{itemize}
 
+
 \subsection{Drupal integration considerations}
 \label{chapter:analysis-drupal}
 
-Drupal already provides a variety of tools in order to create interactive maps. The following chapter analyses how a server-side clustering implementation could integrate with existing Drupal mapping tools as explained in chapter \ref{chapter:drupal-mapping}.
+Drupal already provides a variety of tools in order to create interactive maps. The following chapter analyses how a server-side clustering implementation could integrate with existing Drupal mapping tools that have been explained in chapter \ref{chapter:drupal-mapping}.
 
-Storage
+\begin{itemize}
 
-The de-facto standard for storing geospatial Data in Drupal 7 is the Geofield module.  By default, the Geofield doesn't provide a \textit{spatial index} but stores spatial data in the field table as separate columns for latitude, longitude and other related spatial information as the bounding box. Given the popularity of the Geofield module, it should be considered as the primary source for spatial data to be processed within the server-side clustering implementation.
+\item \textbf{Configuration}: Most Drupal modules provide a user interface that helps configure settings. Similarly, the server-side clustering implementation should be configurable using a user interface in order to setup and parametrize the clustering process. Drupal 7 includes a versatile \textit{Form API\footnote{\url{http://api.drupal.org/api/drupal/developer!topics!forms_api_reference.html/7}}} that helps build such forms and potentially should be used to achieve this requirement.
 
-Querying
+\item \textbf{Storage}: The de-facto standard for storing geospatial data in Drupal 7 is the Geofield module. By default, it doesn't provide a \textit{spatial index} but stores spatial data in the database field table as separate columns for latitude, longitude and other related spatial information as the bounding box. Given the popularity of the Geofield module, it should be considered as the primary source for spatial data to be processed within the server-side clustering implementation.
 
+The Recruiter distribution uses the Search API module suite for performant queries using the Apache Solr search platform. In order to integrate the server-side clustering solution with Recruiter, a possibility for indexing the spatial data using in Solr using the Search API module has to be found.
 
-The clustering task needs to be performed on-the-fly, so that 
+\item \textbf{Querying}: Drupal integration on the query level primarily needs to happen in combination with the Views and Views GeoJSON modules. The clustering tasks therefore needs to be integrated into the process how the Views module queries data and processes its results. The Views module provides an extensive API\footnote{\url{http://api.drupal.org/api/views}} that allows to extend its functionality.
+
+Two main challenges of integrating a server-side clustering solution with Views have been identified: 1) \textit{allow to inject a custom aggregation implementation}\footnote{\url{http://drupal.org/node/1791796}} and 2) \textit{dealing with geospatially clustered data}\footnote{\url{http://drupal.org/node/1824954}}. The first challenge deals with finding a clean way to integrate a clustering solution into the processing queue of the Views module. The second subsequently deals with challenges that arise when processing and visualizing the clustered data afterwards. As the clustering process changes the data being processed, the implementation needs to take care of involved APIs that work with the changed data. 
+
+Similarly to the previously discussed storage aspect of the Drupal integration, the querying component to account for clustering data in combination with Solr and the Search API.
+
+\item \textbf{Visualization}: Once clustered, the data needs to be visualized on the client. Primarily using a Bounding Box strategy in combination with a JavaScript mapping library supported by Drupal needs to be realized. 
+
+\end{itemize}
+
 
 
 
