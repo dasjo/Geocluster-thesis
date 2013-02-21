@@ -6,9 +6,37 @@
 \section{Analysis}
 \label{chapter:analysis}
 
+The two main objectives stated in chapter \ref{chapter:objectives} are 1) \textit{performance} and 2) \textit{integration and extensibility}. Together they define the target of creating an integrated solution for server-side clustering in Drupal with a clear focus on enhancing the performance of data-intense maps.
+
+\subsection{Algorithm considerations}
+
+By the definition of clustering foundations explained in \ref{chapter:foundations-clustering}, a number of factors need to be considered when designing the clustering algorithm. For the clustering task, a \textit{pattern representation} method, a \textit{proximity measure} and the \textit{clustering algorithm} itself need to be defined. In addition, the \textit{cluster type} and the right choice of \textit{clustering techniques} have to be considered. The following enumeration discusses the considerations for the named factors, with one exception: the applied clustering techniques will be discussed in combination with the actual algorithm in chapter \ref{chapter:algorithm}. 
+
+\begin{itemize}
+
+\item \textbf{Pattern representation}: A number of spatial data types as points, lines or rectangles exist (see chapter \ref{chapter:spatial-data}). For practical and simplicity reasons, only points as the simplest spatial data type need to considered for the pattern representation of the server-side clustering task. The exact selection of the pattern representation depends on the Drupal integration consideration, outlined in the following chapter \ref{chapter:analysis-drupal}.
+
+\item \textbf{Proximity measure}: Amongst the options for proximity measures (see chapter \ref{chapter:proximity}), the Euclidean distance is the obvious choice for the intended clustering task. What needs to be considered in this case though, are the implications of a map projection being used to represent the spherical geoid on a planar map on the computer screen (see \ref{chapter:projections}).
+
+\item \textbf{Cluster type}: Different means for the definition of cluster types have been explained in chapter \ref{chapter:cluster-types}. The attributes of \textit{well-separated}, \text-it{prototype-based} and \textit{density-based} clusters seem logical clustering points on a map. Most importantly, clusters should be defined by the centroid of all clustered items as their prototype. The attributes of the two other cluster types only apply to a certain extend. Well-separated ensures that clusters don't overlap which enhances readability of the map. Density-based clusters account for a visual grouping of items in crowded regions. For simplicity and readability, prototype-based clusters represented as single map markers are preferred over potentially polymorph well-separated or density-based clusters.
+
+\item \textbf{Clustering algorithm}: In order to support dynamic queries, the clustering task needs to be performed on-the-fly. On the other hand, the clustering should perform efficiently. Chapter \ref{chapter:clustering-grid} explains how the grid-based STING algorithm precalculates clusters in order to achieve a constant time complexity for the actual retrieval of cluster items at query-time. The intended design and implementation of the server-side clustering algorithm needs find a good balance between performance while still guaranteeing an on-the-fly clustering of dynamically retrieved data sets.
+
+\end{itemize}
+
+\subsection{Drupal integration considerations}
+\label{chapter:analysis-drupal}
+
+Drupal already provides a variety of tools in order to create interactive maps. The following chapter analyses how a server-side clustering implementation could integrate with existing Drupal mapping tools as explained in chapter \ref{chapter:drupal-mapping}.
+
+Storage
+
+The de-facto standard for storing geospatial Data in Drupal 7 is the Geofield module.  By default, the Geofield doesn't provide a \textit{spatial index} but stores spatial data in the field table as separate columns for latitude, longitude and other related spatial information as the bounding box. Given the popularity of the Geofield module, it should be considered as the primary source for spatial data to be processed within the server-side clustering implementation.
+
+Querying
 
 
-
+The clustering task needs to be performed on-the-fly, so that 
 
 
 
