@@ -50,6 +50,12 @@ Similarly to the previously discussed storage aspect of the Drupal integration, 
 \end{itemize}
 
 
+Based on the previous insights regarding the algorithm and Drupal integration considerations, a concrete clustering algorithm needed to be found. As explained, multiple data storage backends including the default MySQL-based Geofield storage and Apache Solr as indexing server are considered which means that the clustering algorithm should not rely on a particular database. The Geohash encoding algorithm for spatial coordinates into string identifiers has been explained in chapter \ref{chapter:geohash}. Its hierarchical spatial structure can be leveraged as a spatial indexing mechanism that is abstracted from the concrete database implementation. In the following chapters, the concrete algorithm,  architecture and implementation will be explained.
+
+
+
+
+
 
 
 

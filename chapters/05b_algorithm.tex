@@ -3,5 +3,29 @@
 % realization - algorithm
 %
 
-\section{Geocluster algorithm}
+\section{Geohash-based algorithm}
 \label{chapter:algorithm}
+
+The clustering algorithm leverages a hierarchical, spatial index based on Geohash to create an initial clustering of the data set. In a second step, the agglomerative clustering approach merges overlapping clusters by using an iterative neighbor check method. Besides the actual data set, the clustering algorithm uses two main input parameters: the current zoom level of the map being viewed and a setting for the minimum distance between clusters. 
+
+The hierarchical index is created in the following way. For each location point, the latitude and longitude values are encoded as Geohash strings. Based on the gradual precision degradation property of Geohash a prefix of the resulting string identifier from length 1 to the maximum Geohash length is stored separately. Every of these Geohash prefixes is the identifier of the encoded point on the corresponding level in the spatial index hierarchy. 
+
+
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{ |l|l|c|c|c|c|c| }
+  \hline
+  City & Latitude / Longitude & Geohash & Level 1 & Level 2 & Level 3 & Level 4  \\
+  \hline
+  Vienna & 48.2081743, 16.3738189 & u2ed & u & u2 & u2e & u2ed \\
+  Linz   & 48.2081743, 16.3738189 & u2d4 & u & u2 & u2d & u2d4 \\
+  Berlin & 52.5191710, 13.4060912 & u33d & u & u3 & u33 & u33d \\
+  \hline
+\end{tabular}
+\caption{Example of a Geohash-based hierarchical, spatial index.}
+\label{table:algorithm-geohash}
+\end{center}
+\end{table}
+
+Table \ref{table:algorithm-geohash} demonstrates an exemplary Geohash-based spatial index consisting of three European cities: Vienna, Linz and Berlin. All three cities share the Geohash prefix of length one, while only Vienna and Linz lie within the same Geohash prefix of length two. None of the cities share the Geohash prefixes of length three and four. 
+
