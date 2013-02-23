@@ -6,10 +6,9 @@
 \section{Geohash-based algorithm}
 \label{chapter:algorithm}
 
-The clustering algorithm leverages a hierarchical, spatial index based on Geohash to create an initial clustering of the data set. In a second step, the agglomerative clustering approach merges overlapping clusters by using an iterative neighbor check method. Besides the actual data set, the clustering algorithm uses two main input parameters: the current zoom level of the map being viewed and a setting for the minimum distance between clusters. 
+The clustering algorithm leverages a hierarchical spatial index based on Geohash. In a \textit{first step}, it will initialize variables for the clustering process. The \textit{second step} creates an initial clustering of the data set based on Geohash. In a \textit{third step}, the agglomerative clustering approach merges overlapping clusters by using an iterative neighbor check method. Besides the actual data set, the clustering algorithm uses two main \textit{input parameters}: the current zoom level of the map being viewed and a setting for the minimum distance between clusters. In the following chapter, the spatial index, the cluster definition and the clustering algorithm itself will be explained.
 
-The hierarchical index is created in the following way. For each location point, the latitude and longitude values are encoded as Geohash strings. Based on the gradual precision degradation property of Geohash a prefix of the resulting string identifier from length 1 to the maximum Geohash length is stored separately. Every of these Geohash prefixes is the identifier of the encoded point on the corresponding level in the spatial index hierarchy. 
-
+A \textbf{Geohash-based hierarchical spatial index} is created to support an efficient clustering process. For each location point, the latitude and longitude values are encoded as Geohash strings. Based on the gradual precision degradation property of Geohash, prefixes of the resulting string identifier for each length from 1 to the maximum Geohash length are stored separately. Each Geohash prefix is the identifier of the encoded point on the corresponding level in the spatial index hierarchy. 
 
 \begin{table}[ht]
 \begin{center}
@@ -27,5 +26,97 @@ The hierarchical index is created in the following way. For each location point,
 \end{center}
 \end{table}
 
-Table \ref{table:algorithm-geohash} demonstrates an exemplary Geohash-based spatial index consisting of three European cities: Vienna, Linz and Berlin. All three cities share the Geohash prefix of length one, while only Vienna and Linz lie within the same Geohash prefix of length two. None of the cities share the Geohash prefixes of length three and four. 
+Table \ref{table:algorithm-geohash} demonstrates an exemplary Geohash-based spatial index consisting of three European cities: Vienna, Linz and Berlin. All three cities share the Geohash prefix of length one, while only Vienna and Linz lie within the same Geohash prefix of length two. None of the cities share the Geohash prefixes of length three and four.
+
+A \textbf{cluster} is defined as a spatial point defined by latitude and longitude values based on one or many clustered points. The location of the cluster is defined by the centroid its sub-points. Besides its location, a cluster needs to store the number of items contained within the cluster. A cluster may contain optional information on the aggregated information from clustered items as unique identifiers or references to the original items.      
+
+\newlength\inputlen
+\newcommand\myinput[1]{%
+  \settowidth\inputlen{\KwIn{}}%
+  \setlength\hangindent{\inputlen}%
+  \hspace*{\inputlen}#1\\}
+
+\begin{algorithm}[t]
+  \SetKwInOut{Input}{input}
+  \SetKwFunction{getClusterLevel}{getClusterLevel}
+  \SetKwFunction{getGeohashPrefix}{getGeohashPrefix}
+  \SetKwFunction{initCluster}{initCluster}
+  \SetKwFunction{addToCluster}{addToCluster}
+  \SetKwFunction{shouldCluster}{shouldCluster}
+  \SetKwFunction{getGeohashNeighbors}{getGeohashNeighbors}
+  \SetKwFunction{mergeClusters}{mergeClusters}
+  \SetKwBlock{Begin}{begin}{end}
+  \KwIn{unclustered geo data, $points$}
+  \myinput{current zoom level, $zoom$}
+  \myinput{minimum cluster distance, $distance$}
+  \BlankLine
+  \Begin(Phase 1: initialize variables){
+  	$level \leftarrow$ \getClusterLevel($zoom$, $distance$)\;
+  	$clusters \leftarrow \emptyset$\;
+  }
+  \Begin(Phase 2: pre-cluster points based on Geohash){
+  	\For{$p \in points$}{
+   	  $prefix \leftarrow$ \getGeohashPrefix($p$, $level$)\;
+    	  \eIf{$prefix \notin clusters$}{
+        $clusters \leftarrow clusters$ $\cup$ \initCluster($p$)\;
+    	  }{
+        \addToCluster($clusters.prefix$, $p$)\;
+    	  }
+  	}
+  }
+  \Begin(Phase 3: merge clusters by neighbor-check){
+    \For{$c1 \in clusters$}{
+      $neighbors \leftarrow$ \getGeohashNeighbors($c1$, $clusters$)\;
+      \For{$c2 \in neighbors$}{
+        \If{\shouldCluster(c1, c2, distance)}{
+          \mergeClusters($clusters$, $c1$, $c2$)\;
+        }
+      }
+    }  
+  }
+  \KwOut{clustered results, $clusters$}
+  \BlankLine
+
+  \caption{K-means algorithm~\cite{Meert06clustermaps}}
+  \label{alg:geocluster}
+\end{algorithm}
+
+The \textbf{Geohash-based algorithm} takes advantage of the spatial index create cluster items efficiently. A prototypical pseudo-code is provided at algorithm \ref{alg:geocluster}. In the following section, the input, its 3 phases and the output of the clustering algorithm will be discussed.
+
+\begin{itemize}
+
+\item Three \textit{input parameters} are required by the clustering algorithm: $points$ is the set of geo data item to be clustered. These points need to be indexed based on the previously described \textit{Geohash-based hierarchical spatial index}. In addition, $zoom$ describes the zoom level of the map being viewed and $distance$ is the minimum distance between clusters in pixels. Together, the zoom and distance parameters allow to control the granularity of the clustering process.
+
+\item \textbf{Phase 1: initialize variables}
+
+In the initialization phase, the clustering algorithm prepares for the actual clustering process. Primarily the clustering $level$ is computed by a \textit{getClusterLevel} function. This function needs calculate a clustering $level$ so that clusters of reasonable sizes are generated the given $zoom$ and $distance$ parameters.
+
+\item \textbf{Phase 2: pre-cluster points based on Geohash}
+
+Clusters are created by aggregating all points that share a common Geohash-prefix of length equal to the clustering $level$ into preliminary clusters.
+
+For each point, the \textit{getGeohashPrefix} function determines a $prefix$ Geohash-prefix is determined, essentially accessing the prefix of length $level$ from the \textit{Geohash-based hierarchical spatial index}. In an agglomerative process, clusters are created for all $points$ that share the same $prefix$. If for a given $prefix$ no $cluster$ exists at the moment, the $initCluster$ function initializes a new cluster based on the point. If the $prefix$ already has been added as cluster, the $addToCluster$ function adds the point to the appropriate, existing cluster and updates cluster information as the centroid and the number of items within the cluster.
+
+The preliminary clustering based on Geohash is suboptimal, because of the edge cases described in chapter \ref{chapter:geohash} and illustrated in figure \ref{fig:geohash-edge}. In order to account for overlapping clusters at the edges of Geohash cells, a third phase merges clusters by a neighbor-check.
+
+\item \textbf{Phase 3: merge clusters by neighbor-check}
+
+Overlapping neighbor clusters are merged in the third phase of the clustering algorithm. For every cluster in the precomputed $clusters$ from phase 2, a $getGeohashNeighbors$ function determines all neighbors relevant for the neighbor check. A $shouldCluster$ function determines, if two clusters need to be merged based on the $distance$ parameter compared to their  relative $distance$. It needs to implement a \textit{Euclidian distance} measure as explained in chapter \ref{chapter:proximity} but also account for implications of the roughly spherical geoid and map projection introduced in chapter \ref{chapter:projections}. If two clusters should be merged, a $mergeClusters$ function joins them together similarly to the $addCluster$ function described in phase 2.
+
+\item The $output$ of the Geohash-based clustering algorithm is a set of $clusters$ that satisfies the minimum cluster distance criterion specified by the $distance$ parameter.
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
