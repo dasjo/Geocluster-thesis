@@ -3,7 +3,7 @@
 % realization - algorithm
 %
 
-\section{Geohash-based algorithm}
+\section{Geohash-based clustering algorithm}
 \label{chapter:algorithm}
 
 The clustering algorithm leverages a hierarchical spatial index based on Geohash. In a \textit{first step}, it will initialize variables for the clustering process. The \textit{second step} creates an initial clustering of the data set based on Geohash. In a \textit{third step}, the agglomerative clustering approach merges overlapping clusters by using an iterative neighbor check method. Besides the actual data set, the clustering algorithm uses two main \textit{input parameters}: the current zoom level of the map being viewed and a setting for the minimum distance between clusters. In the following chapter, the spatial index, the cluster definition and the clustering algorithm itself will be explained.
@@ -28,7 +28,7 @@ A \textbf{Geohash-based hierarchical spatial index} is created to support an eff
 
 Table \ref{table:algorithm-geohash} demonstrates an exemplary Geohash-based spatial index consisting of three European cities: Vienna, Linz and Berlin. All three cities share the Geohash prefix of length one, while only Vienna and Linz lie within the same Geohash prefix of length two. None of the cities share the Geohash prefixes of length three and four.
 
-A \textbf{cluster} is defined as a spatial point defined by latitude and longitude values based on one or many clustered points. The location of the cluster is defined by the centroid its sub-points. Besides its location, a cluster needs to store the number of items contained within the cluster. A cluster may contain optional information on the aggregated information from clustered items as unique identifiers or references to the original items.      
+For the particular clustering algorithm, a \textbf{cluster} is defined as a spatial point based on one or many clustered points. The location of the cluster is defined by the latitude and longitude values of the centroid of its sub-points. Besides its location, a cluster also needs to store the number of items contained within the cluster. In addition, a cluster may contain optional, aggregated information about the clustered items as a list of their unique identifiers or references to the original items.      
 
 \newlength\inputlen
 \newcommand\myinput[1]{%
