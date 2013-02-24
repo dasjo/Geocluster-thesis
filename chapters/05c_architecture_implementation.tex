@@ -120,8 +120,30 @@ As indicated by figure \ref{fig:geocluster-class-diagram}, the \textit{Geocluste
 
 \subsection{Implementation of the clustering algorithm}
 
+Three variations of the Geohash-based algorithm have been implemented for Drupal 7. In a first iteration, a \textit{PHP-based} implementation of the clustering algorithm was prototyped to figure out the integration of the algorithm into the Drupal mapping stack. In a second and third iteration, \textit{MySQL-aggregation-based} and \textit{Solr-based} algorithm implementations were added to improve performance and support additional use cases.
 
-Three variations of the Geohash-based algorithm have been implemented for Drupal 7. In a first iteration, a \textit{PHP-based} implementation of the clustering algorithm was prototyped to figure out the integration of the algorithm into the Drupal mapping stack. In a second and third iteration, \textit{MySQL-aggregation-based} and \textit{Solr-based} algorithm implementations were added to improve performance support additional use cases. 
+The abstract \textit{GeoclusterAlgorithm} class defines the basics of a clustering algorithm. It provides access to the configuration options for the algorithm. In addition, it defines $pre\_execute$ and $post\_execute$ as the two main methods that will allow the actual algorithm implementation perform its clustering task.
+
+A second, abstract \textit{GeohashGeoclusterAlgorithm} class encapsulates common infrastructure for the Geohash-based clustering algorithms. An empty stub for creating an initial clustering by using the geohash grid is defined as $preClusterByGeohash$, as well as a default implementation of $clusterByNeighborCheck$ that creates final clusters by checking for overlapping neighbors. Further methods are common helper function defined by the algorithm as $initCluster$, $shouldCluster$ and $addCluster$.
+
+The actual implementations of the geocluster algorithm are realized as plugins using the CTools plugin system\footnote{\url{http://drupal.org/project/ctools}}. This allows other modules to implement their own algorithm plugins which will automatically be exposed within the geocluster configuration options. As an example, the Apache Solr-based geocluster implementation has been implemented within a separate, optional sub-module \textit{Geocluster Solr}. 
+
+\begin{itemize}
+
+\item \textbf{PHPGeohashGeoclusterAlgorithm} is an exemplary, PHP-based implementation of the Geohash-based clustering algorithm. It was primarily created as a first prototype to demonstrate clustering functionality, test the algorithm and work out integration issues with Drupal.
+
+The PHP-based algorithm is completely decoupled from the database, as it only relies on Geofield and performs all clustering logic in a the post-execution step of the algorithm. On the other hand, this also makes it the least performant algorithm implementation, because the entire set of results has to be loaded before the clustering process is executed.
+
+\textit{PHPGeohashGeoclusterAlgorithm} uses an adapted version of the \\ \textit{views\_handler\_field\_field::post\_execute()}\footnote{\url{http://api.drupal.org/api/views/modules!field!views\_handler\_field\_field.inc/function/views\_handler\_field\_field\%3A\%3Apost\_execute/7}} method. Its intention is to use\\ \textit{field\_attach\_load}\footnote{\url{http://btmash.com/article/2012-04-13/i-just-want-one-field-using-fieldattachload}} to load just the necessary field information instead of loading items whole entities before the clustering process.
+
+
+\item \textbf{MySQLGeohashGeoclusterAlgorithm} option allows the user to select one of the provided clustering algorithms.
+
+\item \textbf{SolrGeohashGeoclusterAlgorithm} option allows the user to select one of the provided clustering algorithms.
+
+This module defines the Solr-based clustering algorithm and additional logic to integrate with the Solr-related infrastructure and    
+
+\end{itemize}
 
 \subsection{Integration of the clustering process with Views}
 
