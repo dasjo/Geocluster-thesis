@@ -51,8 +51,8 @@ The parts involved in the Geocluster system are
 \item Server-side clustering implementation
   \begin{itemize}
    \item Configuration of the clustering process
-   \item Implementation of the clustering algorithm
    \item Integration of the clustering process with Views
+   \item Implementation of the clustering algorithm
   \end{itemize}
 
 \item Client-side Geocluster Visualization component
@@ -80,7 +80,7 @@ During the development of the Geocluster module, support for encoding location v
 
 \subsection{Server-clustering implementation}
 
-The server-side clustering implementation consists of three parts: configuration of the clustering process, implementation of the clustering algorithm and integration of the clustering process with Views.
+The server-side clustering implementation consists of three parts: configuration of the clustering process, integration of the clustering process with Views and implementation of the clustering algorithm.
 
 \begin{figure}[h]
   \begin{center}
@@ -91,6 +91,7 @@ The server-side clustering implementation consists of three parts: configuration
 \end{figure}
 
 Figure \ref{fig:geocluster-class-diagram} illustrates how the \textit{GeoclusterAlgorithm} allows for different variations of the clustering algorithm to be implemented and how the configuration integrates with the Views module. 
+
 
 \subsection{Configuration of the clustering process}
 
@@ -118,11 +119,12 @@ When configuring a View, the user may enable Geocluster using a checkbox as illu
 
 As indicated by figure \ref{fig:geocluster-class-diagram}, the \textit{GeoclusterConfigViewsDisplayExtender} class integrates the configuration options as a Views plugin. The actual configuration options have been decoupled from the Views-dependent plugin as the \textit{GeoclusterConfig} class. The interface \textit{GeoclusterConfigBackendInterface} abstracts the communication between the configuration classes and the \textit{GeoclusterAlgorithm}. 
 
+
 \subsection{Implementation of the clustering algorithm}
 
 Three variations of the Geohash-based algorithm have been implemented for Drupal 7. In a first iteration, a \textit{PHP-based} implementation of the clustering algorithm was prototyped to figure out the integration of the algorithm into the Drupal mapping stack. In a second and third iteration, \textit{MySQL-aggregation-based} and \textit{Solr-based} algorithm implementations were added to improve performance and support additional use cases.
 
-The abstract \textit{GeoclusterAlgorithm} class defines the basics of a clustering algorithm. It provides access to the configuration options for the algorithm. In addition, it defines $pre\_execute$ and $post\_execute$ as the two main methods that will allow the actual algorithm implementation perform its clustering task.
+The abstract \textit{GeoclusterAlgorithm} class defines the basics of a clustering algorithm. A constructor initializes the clustering task according to phase 1 of the algorithm. The algorithm base class provides access to the configuration options for the algorithm. In addition, it defines $pre\_execute$ and $post\_execute$ as the two main methods that will allow the actual algorithm implementation perform its clustering task.
 
 A second, abstract \textit{GeohashGeoclusterAlgorithm} class encapsulates common infrastructure for the Geohash-based clustering algorithms. An empty stub for creating an initial clustering by using the geohash grid is defined as $preClusterByGeohash$, as well as a default implementation of $clusterByNeighborCheck$ that creates final clusters by checking for overlapping neighbors. Further methods are common helper function defined by the algorithm as $initCluster$, $shouldCluster$ and $addCluster$.
 
@@ -132,29 +134,34 @@ The actual implementations of the geocluster algorithm are realized as plugins u
 
 \item \textbf{PHPGeohashGeoclusterAlgorithm} is an exemplary, PHP-based implementation of the Geohash-based clustering algorithm. It was primarily created as a first prototype to demonstrate clustering functionality, test the algorithm and work out integration issues with Drupal.
 
-The PHP-based algorithm is completely decoupled from the database, as it only relies on Geofield and performs all clustering logic in a the post-execution step of the algorithm. On the other hand, this also makes it the least performant algorithm implementation, because the entire set of results has to be loaded before the clustering process is executed.
+The PHP-based algorithm is completely decoupled from the database, as it only relies on Geofield and performs all clustering logic from phases 2 \& 3 in a the post-execution step of the algorithm. On the other hand, this also makes it the least performant algorithm implementation, because the entire set of results has to be loaded before the clustering process is executed.
 
 \textit{PHPGeohashGeoclusterAlgorithm} uses an adapted version of the \\ \textit{views\_handler\_field\_field::post\_execute()}\footnote{\url{http://api.drupal.org/api/views/modules!field!views\_handler\_field\_field.inc/function/views\_handler\_field\_field\%3A\%3Apost\_execute/7}} method. Its intention is to use\\ \textit{field\_attach\_load}\footnote{\url{http://btmash.com/article/2012-04-13/i-just-want-one-field-using-fieldattachload}} to load just the necessary field information instead of loading items whole entities before the clustering process.
 
 
-\item \textbf{MySQLGeohashGeoclusterAlgorithm} option allows the user to select one of the provided clustering algorithms.
+\item \textbf{MySQLGeohashGeoclusterAlgorithm} is a MySQL-aggregation-based implementation of the clustering algorithm. Its intention is to improve performance by shifting the time-critical part from phase 2 of the clustering process into the database. In comparison to the post-execution based PHP algorithm, the database query delivers an already pre-clustered result. The neighbor-check of the algorithm is then performed on the pre-clustered result from the database.
 
-\item \textbf{SolrGeohashGeoclusterAlgorithm} option allows the user to select one of the provided clustering algorithms.
+The Geohash-based pre-clustering is realized as a combination of the \textit{GROUP BY} clause with \textit{aggregate} functions. The pre-execution step of the algorithm adds the clustering-specific aggregation settings to the query. The results will be grouped by the column that matches the index level determined by the clustering initialization step. In addition, a the $COUNT$ function is used to calculate cluster sizes and $AVG$ provides an approximation of each cluster's centroid.
 
-This module defines the Solr-based clustering algorithm and additional logic to integrate with the Solr-related infrastructure and    
+\item \textbf{SolrGeohashGeoclusterAlgorithm} is a Search API Solr-based implementation of the clustering algorithm. It improves performance by shifting the time-critical part from phase 2 of the clustering process into the Solr search engine, similarly to the approach of the MySQL-based algorithm. 
 
-\end{itemize}
-
-\subsection{Integration of the clustering process with Views}
-
-
-
-
+Clustering with Solr requires the Geohash-based spatial index to be integrated with the Solr search engine. Also the execution process of a Search API based view differs from the default Views execution process in a number of ways. Finally, the results being processed in a Sarch API View have a different structure from the default result structure of a views result. The resulting complexity of integration of Geocluster with Search API Solr motivated the creation of a separate sub-module \textit{Geocluster Solr} that contains necessary infrastructure and helpers.
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=1\textwidth]{figures/geocluster_solr_architecture.pdf}
-    \caption{The Drupal Geofield module and related geo data input and storage modules.}
-    \label{fig:geofield}
+    \caption{Geocluster Solr architecture overview.}
+    \label{fig:geocluster-solr-architecture}
   \end{center}
 \end{figure}
+
+Figure \ref{fig:geocluster-solr-architecture} visualizes how Geocluster Solr is integrated into the default architecture of Geocluster, as described in figure \ref{fig:geocluster-architecture}. The original intention was to create a Solr plugin that would perform the entire algorithm within the Solr search engine. A draft for such a plugin has been created on github\footnote{\url{https://github.com/dasjo/SolrGeocluster}}. In order to facilitate the use of Geocluster Solr without the need for installing an custom Solr plugin and for the lack of understanding of the Solr API, a simpler approach was taken. Instead of performing the entire clustering process within Solr, just the first step of creating clusters based on Geohash is realized using a standard Solr query. This still keeps the time critical task within Solr.
+
+A custom search service class $GeoclusterSearchApiSolrService$ has been defined that implements the main clustering logic within a $preQuery$ and a $postQuery$ method. Within the preQuery step, the Geohash-based pre-clustering step is configured by using the \textit{result grouping}\footnote{\url{http://wiki.apache.org/solr/FieldCollapsing}} feature of Apache Solr. The query is configured to return groups of results based on the clustering index level. The postQuery step maps the Solr-based results into a processable structure and delegates to the generic $clusterByNeighborCheck$ method of the clustering algorithm.
+
+\end{itemize}
+
+Two helper classes support the clustering task. $GeoclusterHelper$ provides a set of geospatial PHP functions to in order to calculate the distance between two points on the map in pixels based on the zoom resolution and the haversine formula\footnote{\url{http://en.wikipedia.org/wiki/Haversine_formula}}. Additional helpers support coordinate system conversions for the Spherical Mercator projection, see chapters \ref{chapter:coordinates} and \ref{chapter:projections}. $GeohashHelper$ helps initializing the algorithm by a $lengthFromDistance$ function that determines the appropriate geohash prefix length based on zoom level and minimum distance in pixels.
+
+
+
