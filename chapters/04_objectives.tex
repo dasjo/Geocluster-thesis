@@ -7,9 +7,10 @@
 \label{chapter:objectives}
 
 
-\section{Performance}
+\section{Performant real-time clustering}
+\label{chapter:objective-performance}
 
-The main purpose of this thesis is to design and implement an algorithm that allows to create performant, scalable maps with Drupal by using server-side clustering. The algorithm needs to cluster the geospatial data on the server-side, before it is rendered by Drupal and gets transferred to the client. As a result, the client-side mapping visualization component receives a limited amount of clustered data which can be processed and visualized efficiently enough to produce a smooth end-user experience.
+The main purpose of this thesis is to design and implement an algorithm that allows to create performant, scalable maps with Drupal by using server-side clustering in real-time. The algorithm needs to dynamically cluster geospatial data on the server-side, before it is rendered by Drupal and gets transferred to the client. As a result, the client-side mapping visualization component receives a limited amount of clustered data which can be processed and visualized efficiently enough to produce a smooth end-user experience.
 
 The expected performance benefits of using a server-side geo clustering component to be designed and implemented for Drupal are:
 
@@ -32,6 +33,7 @@ The goal is to build upon existing cluster theory, the current state of the art 
 
 
 \section{Integration and extensibility}
+\label{chapter:objective-integration}
 
 The server-side clustering implementation should be designed for integration and extensibility. Integration should be provided or at least be possible with key components of the existing ecosystem for creating interactive-maps with Drupal as explained in \ref{chapter:drupal-mapping}. There is also a need for means of extensibility within the clustering solution to facilitate further improvements of the clustering implementation.
 
@@ -49,6 +51,7 @@ The intended benefits of an integrated and extensible approach for the server-si
 
 
 \section{Open source}
+\label{chapter:open-source}
 
 One of the main reasons for the wide adoption of Drupal as a content management system and framework is that it is licensed under the terms of the GNU General Purpose License (GPL). Being free and open source software gives any user the freedom to run, copy, distribute, study, change and improve the software. The intended server-side clustering solution would build upon the Drupal system and a number of extension modules essential to the creation of interactive-mapping solutions. Not only as a logical consequence, but also as a primary factor of motivation, the results of this thesis and in particular the clustering implementation should be released under the free and open source GPL license.
 
@@ -66,6 +69,7 @@ An open process of planning, designing and developing a server-side clustering s
 
 
 \section{Use cases}
+\label{chapter:objective-use-cases}
 
 The practical use case for server-side geo clustering should add spatial search capabilities to the \textit{Recruiter} job board solution.
 
@@ -76,6 +80,7 @@ Recruiter is a Drupal distribution for building Drupal based e-recruitment platf
 Adding server-side geo clustering capabilities would allow to visualize several thousands of available jobs on an interactive map for large-scale e-recruitment websites. The server-side clustering solution should be designed for the possibility to be added to geospatial searches realized in combination with the Recruiter distribution. This influences the integration and extensibility requirements, stated in the previous chapter.
 
 \section{Usability}
+\label{chapter:objective-usability}
 
 Clustering data on maps not only affects performance, it also changes the way the user will see and interact with the clustered data. Ideally, the clustering process should support the user in the task of exploring a large data set on the map by compacting the amount of information that is visualized. The way how the clustered data is visualized on the map needs to communicate essential information about the clustered data like the size of a cluster. In addition, the user needs means of interacting with the clustered data being presented. The user should be able to reveal the details of clustered data for example by zooming in. 
 

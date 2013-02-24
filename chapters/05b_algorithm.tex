@@ -107,16 +107,4 @@ Overlapping neighbor clusters are merged in the third phase of the clustering al
 
 \end{itemize}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+The described Geohash-based algorithm is grid-based and can be compared to the STING algorithm described in chapter \ref{chapter:clustering-grid}. The STING algorithm precomputes clusters to achieve constant time complexity relative to the number of grids. By the requirement to compute clusters in real-time, this approach was out of scope for the Geohash-based algorithm. Instead, it leverages the grid to achieve a time complexity is linear to the number of points $\BigO{n}$.
