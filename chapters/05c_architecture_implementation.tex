@@ -164,4 +164,17 @@ A custom search service class $GeoclusterSearchApiSolrService$ has been defined 
 Two helper classes support the clustering task. $GeoclusterHelper$ provides a set of geospatial PHP functions to in order to calculate the distance between two points on the map in pixels based on the zoom resolution and the haversine formula\footnote{\url{http://en.wikipedia.org/wiki/Haversine_formula}}. Additional helpers support coordinate system conversions for the Spherical Mercator projection, see chapters \ref{chapter:coordinates} and \ref{chapter:projections}. $GeohashHelper$ helps initializing the algorithm by a $lengthFromDistance$ function that determines the appropriate geohash prefix length based on zoom level and minimum distance in pixels.
 
 
+\subsection{Client-side Geocluster Visualization component}
 
+A simple Geocluster visualization component has been built to support the display of clustered markers on interactive maps based on the output of the server-side clustering implementation. It extends the Bounding Box strategy of the Leaflet GeoJSON module in oder to create numbered markers that visualize the cluster sizes. Clicking on a clustered marker will zoom into the map in order to explore the data on a more granular level. Figure \ref{fig:geocluster-visualiation} demonstrates an example screenshot of the Geocluster visualization.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{figures/geocluster_visualization.png}
+    \caption{Geocluster visualization: a Leaflet map containing clustered markers.}
+    \label{fig:geocluster-visualiation}
+  \end{center}
+\end{figure}
+
+
+The Bounding Box related logic for Leaflet originally has been developed as a part of the Geocluster module. During the development process, this part of Geocluster was generalized and published as the independent Leaflet GeoJSON module\footnote{\url{http://drupal.org/project/leaflet_geojson}}. The visualization component of Geocluster therefore integrates with Leaflet GeoJSON and extends the JavaScript implementation of the Bounding Box strategy to integrate custom markers and cluster interaction. The cluster visualization is based on a code snippet for numbered markers on github\footnote{\url{https://gist.github.com/comp615/2288108}}.
