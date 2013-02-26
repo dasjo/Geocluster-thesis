@@ -5,7 +5,19 @@
 
 \chapter{Use cases}
 
-TODO
+\section{Demo Use Case Features}
 
-GeoRecruiter
+A set of demonstration use cases has been created in order to test and evaluate the Geocluster implementation described in chapter \ref{chapter:architecture-implementation}. The set consists of one non-clustering map and 3 maps based on the different clustering algorithms. The demo use cases were configured using various Drupal modules and exported into code using the Features module\footnote{\url{http://drupal.org/project/features}}.
+
+\begin{itemize}
+
+\item \textbf{Geocluster Demo} show cases maps based on the two clustering algorithms provided by Geocluster module: PHP-based clustering and MySQL-based clustering and an additional map that doesn't use clustering at all. The article content type of a standard Drupal installation is extended by a Geofield-based place field for storing locations. For each map, a separate View is configured to provide a GeoJSON feed. A Leaflet map is then added on top of the feed by using the Leaflet GeoJSON module.
+
+\item \textbf{Geocluster Demo Solr} adds a show case of the Solr-based clustering algorithm. It provides a setup based on Views GeoJSON and Leaflet GeoJSON similar to the Geocluster Demo feature. In addition, a Search API Server and Index configuration is added for indexing and querying the data using Apache Solr.  
+
+\item \textbf{Geocluster Demo Content} is a sub-module that automatically imports a set of demo content for testing the Geocluster Demo and Geocluster Demo Solr features.
+
+\end{itemize}
+
+\section{GeoRecruiter}
 
