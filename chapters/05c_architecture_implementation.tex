@@ -121,6 +121,7 @@ As indicated by figure \ref{fig:geocluster-class-diagram}, the \textit{Geocluste
 
 
 \subsection{Implementation of the clustering algorithm}
+\label{chapter:impl-alg}
 
 Three variations of the Geohash-based algorithm have been implemented for Drupal 7. In a first iteration, a \textit{PHP-based} implementation of the clustering algorithm was prototyped to figure out the integration of the algorithm into the Drupal mapping stack. In a second and third iteration, \textit{MySQL-aggregation-based} and \textit{Solr-based} algorithm implementations were added to improve performance and support additional use cases.
 
@@ -166,13 +167,21 @@ Two helper classes support the clustering task. $GeoclusterHelper$ provides a se
 
 \subsection{Client-side Geocluster Visualization component}
 
-A simple Geocluster visualization component has been built to support the display of clustered markers on interactive maps based on the output of the server-side clustering implementation. It extends the Bounding Box strategy of the Leaflet GeoJSON module in oder to create numbered markers that visualize the cluster sizes. Clicking on a clustered marker will zoom into the map in order to explore the data on a more granular level. Figure \ref{fig:geocluster-visualiation} demonstrates an example screenshot of the Geocluster visualization.
+A simple Geocluster visualization component has been built to support the display of clustered markers on interactive maps based on the output of the server-side clustering implementation. It extends the Bounding Box strategy of the Leaflet GeoJSON module in oder to create numbered markers that visualize the cluster sizes. Clicking on a clustered marker will zoom into the map in order to explore the data on a more granular level. Figure \ref{fig:map-clustered} demonstrates an example screenshot of the Geocluster visualization. Compare this with an unclustered map, containing the same amount of items in figure \ref{fig:map-unclustered}
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=1\textwidth]{figures/geocluster_visualization.png}
+    \includegraphics[width=1\textwidth]{figures/map_clustered.png}
     \caption{Geocluster visualization: a Leaflet map containing clustered markers.}
-    \label{fig:geocluster-visualiation}
+    \label{fig:map-clustered}
+  \end{center}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{figures/map_unclustered.png}
+    \caption{Unclustered Leaflet map.}
+    \label{fig:map-unclustered}
   \end{center}
 \end{figure}
 
