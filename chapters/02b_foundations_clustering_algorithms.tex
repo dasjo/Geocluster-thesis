@@ -6,6 +6,7 @@
 \section{Clustering algorithms}
 
 Researchers have created a multitude of algorithms, each appropriate for a certain task. As we will find out later, the requirements to the spatial clustering algorithm for this thesis are specific, which out-rules most scientific clustering algorithms which are geared towards image recognition or other disciplines. To provide an overview and to understand the basic differentiation of clustering techniques explained in \ref{chapter:clustering-techniques}, in this chapter we will introduce 4 foundational clustering algorithms:
+
 \begin{itemize}
 \item {K-means (Squared Error Algorithm)}
 \item {Agglomerative Hierarchical Clustering Algorithm}
@@ -16,7 +17,7 @@ Researchers have created a multitude of algorithms, each appropriate for a certa
 \subsection{Squared Error Algorithms: K-means}
 \label{chapter:k-means}
 
-The K-means is the most commonly used and simple algorithm based on a \textit{squared error criterion}. It creates a one-level partitioning of the data items by dividing them into \textit{K} clusters. By starting with a random initial partition it iteratively reassigns the patterns to clusters based on similarity.  The clustering process is completed when a convergence criterion is met, i.e. no further reassignments happen. Clusters are defined by \textit{cluster prototypes}: the centroid of the clustered items. Alternatively, the \textit{K-medoid} algorithm uses the most representative data item instead of the centroid.
+The K-means is the most commonly used and simple algorithm based on a \textit{squared error criterion}. It creates a one-level partitioning of the data items by dividing them into \textit{K} clusters. By starting with a random initial partition, it iteratively reassigns the patterns to clusters based on similarity.  The clustering process is completed when a convergence criterion is met, i.e. no further reassignments happen. Clusters are defined by \textit{cluster prototypes}: the centroid of the clustered items. Alternatively, the \textit{K-medoid} algorithm uses the most representative data item instead of the centroid.
 
 The time complexity of the K-means algorithm is linear to the number of points:
 \[time~complexity = \BigO{n}\]
@@ -34,7 +35,7 @@ The time complexity of the K-means algorithm is linear to the number of points:
   \label{alg:k-means}
 \end{algorithm}
 
-The selection of initial centroids affects the final outcome of the clustering process. Choosing them randomly is a simple but not very affective approach which can be compensating by applying multiple runs of the algorithm to retrieve an optimal result set. Optimizations to the centroid initialization include applying a hierarchical clustering or choosing distant points in the beginning.
+The selection of initial centroids affects the final outcome of the clustering process. Choosing them randomly is a simple, but not very affective approach. This can be compensated by applying multiple runs of the algorithm, to retrieve an optimal result set. Optimizations to the centroid initialization include applying a hierarchical clustering or selecting distant points in the beginning.
 
 Assigning points to the closest centroid requires a proximity measure, as explained in \ref{chapter:proximity}. Simple measures like the Euclidian distance are preferred, as this step needs to happen repeatedly within the algorithm. For each cluster, the centroid needs to be recalculated afterwards. This procedure is repeated until centroids do not change any more \cite{Jain99clusterreview, Meert06clustermaps}.
 
@@ -42,7 +43,7 @@ Figure \ref{fig:clustering_k-means} illustrates a K-means clustering process.
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=0.9\textwidth]{figures/clustering_k-means.png}
+    \includegraphics[width=1\textwidth]{figures/clustering_k-means.png}
     \caption{Convergence of K-means clustering: (a) initial data; (b) cluster membership after first loop; (c) cluster membership after second loop~\cite[p 99]{Jain88clustering}.}
     \label{fig:clustering_k-means}
   \end{center}
@@ -52,7 +53,7 @@ Figure \ref{fig:clustering_k-means} illustrates a K-means clustering process.
 \subsection{Agglomerative Hierarchical Clustering Algorithm}
 \label{chapter:clustering-hierarchical}
 
-This exemplary hierarchical clustering algorithm creates a hierarchy of nested sub clusters by serial partitioning. Its \textit{agglomerative} nature makes it start with every data item as a single clusters which get merged sub-sequentially. Alternatively, a \textit{divisive} hierarchical clustering would start with one cluster containing all data points and recursively split them up. At each level, a partitioning can be extracted, for example to serve as initial set of centroids for the previously discussed K-means algorithm. 
+This exemplary, \textit{hierarchical clustering algorithm} creates a hierarchy of nested sub clusters by serial partitioning. Its \textit{agglomerative} nature makes it start with every data item as a single cluster and merge them sub-sequentially. As an alternative, a \textit{divisive} hierarchical clustering would start with one cluster containing all data points and recursively split them up. At each level, a partitioning can be extracted, for example to serve as initial set of centroids for the previously discussed K-means algorithm. 
 
 The time complexity of the agglomerative hierarchical clustering algorithm is:
 \[time~complexity = \BigO{n^3}\]
@@ -68,9 +69,9 @@ The time complexity of the agglomerative hierarchical clustering algorithm is:
   \label{alg:hierarchical}
 \end{algorithm}
 
-At the beginning of the agglomerative hierarchical clustering algorithm, each point is assigned to its own cluster. A proximity matrix is calculated that stores the distance of each pair of data item based on the chosen proximity measure.
+At the beginning of the agglomerative hierarchical clustering algorithm, each point is assigned to its own cluster. A proximity matrix is calculated to store the distances for all pairs of data items based on the chosen proximity measure.
 
-To merge the two closest clusters, different heuristics may be applied. Most importantly, \textit{single-link} hierarchical clustering algorithms measure the distance between two clusters by the \textit{minimum} distance between all pairs of items from the two clusters. In contrast, \textit{complete-link} algorithms use the \textit{maximum} distance to create compact clusters and prevent chaining effects. Other approaches are based on \textit{average linkage} or \textit{Ward's method}. After merging the clusters, the proximity matrix will be updated so it reflects the current state of the clustering process. This procedure is repeated until all clusters have been merged, each step in the loop yields a level in the hierarchical clustering~\cite{Jain88clustering, Jain99clusterreview, Meert06clustermaps}.
+To merge the two closest clusters, different heuristics may be applied. Most importantly, \textit{single-link} hierarchical clustering algorithms measure the distance between two clusters by the \textit{minimum} distance between all pairs of items from the two clusters. In contrast, \textit{complete-link} algorithms use the \textit{maximum} distance to create compact clusters and prevent chaining effects. Other approaches are based on \textit{average linkage} or \textit{Ward's method}. After merging the clusters, the proximity matrix will be updated, so that it reflects the current state of the clustering process. This procedure is repeated until all clusters have been merged, each step in the loop yields a level in the hierarchical clustering~\cite{Jain88clustering, Jain99clusterreview, Meert06clustermaps}.
 
 Figure~\ref{fig:clustering-hierarchical-dendrogram} illustrates a Agglomerative Hierarchical clustering process as a dendrogram.
 
@@ -85,8 +86,8 @@ Figure~\ref{fig:clustering-hierarchical-dendrogram} illustrates a Agglomerative 
 
 \subsection{Density-based clustering algorithms: DBSCAN}
 
-Density-based algorithms cluster regions of high density and separate them from regions with lower density. The density-based approach differentiates them from the previously discussed distance-based methods. This helps them overcome limitations of the former, as those tend to perform well in the detection of spherical-shaped clusters but perform weaker at discovering arbitrary shapes. Density-based algorithms are also insensitive to noise points, so that outliers get isolated. DBSCAN takes a center-based approach.
-?
+Density-based algorithms cluster regions of high density and separate them from regions with lower density. The density-based approach is different to the previously discussed distance-based methods. Those tend to perform well in the detection of spherical-shaped clusters, but discovering arbitrary shapes is a problem. Density-based algorithms overcome this limitation and are also insensitive to noise points, so that outliers get isolated.
+
 \begin{algorithm}[t]
   \While{Point is unclassified}{
     {Find points within region $\epsilon$}\;
