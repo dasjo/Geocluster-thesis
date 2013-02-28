@@ -5,24 +5,30 @@
 
 \chapter{Introduction}
 
-TODO
+
+\section{Motivation}
+
+Digital mapping applications on the Internet are strongly emerging. Big players like Google Maps\footnote{\url{https://maps.google.at}} and OpenStreetMap\footnote{\url{http://www.openstreetmap.org/ }} provide online maps, that users can view and interact with. 
+
+Maps allow telling stories and communicating data in a visual way. Using open source tools such as TileMill\footnote{\url{http://mapbox.com/tilemill}} and online services like CloudMade\footnote{\url{http://cloudmade.com/ }}, more and more people are able to create their own custom maps. The Free and Open Source content management systems and framework Drupal\footnote{\url{http://drupal.org}} provides tools to add, edit and visualize geographic data on maps. This allows to integrate interactive map applications into web sites.
+
+Visualizing thousands of points on a single map are both challenges to human and digital computability. Obviously, when telling a story, information needs to be told in a compact way as the human brain can only process a limited amount of data at the same time. Similarly, large amounts of data involve a higher burden on the computer components that participate in the web mapping process.
+
+Clustering\footnote{\url{http://en.wikipedia.org/wiki/Cluster_analysis}} is a technique for grouping objects with similarities. Various Javascript libraries like Leaflet.markercluster\footnote{\url{https://github.com/Leaflet/Leaflet.markercluster}} exist for clustering points on maps on the client-side. This enhances performance and readability of data-heavy map applications. But still, all data needs to be transferred to the client and processed on a potentially slower end user device. By clustering data on the server-side, the load is shifted from the client to the server which allows displaying larger amounts of data in a performant way. Professional services like maptimize\footnote{\url{http://www.maptimize.com}} provide such a functionality, while in the open source space little libraries and frameworks exist for server-side clustering of geospatial data.
+
+In order to create interactive maps based on large data sets, this thesis evaluates and implements a performance-optimized server-side clustering algorithm for Drupal.
 
 
-\section{Clustering and maps}
+\section{Outline of the thesis}
 
-A common use case in web mapping is representing markers on a slippy map. Markers are the most simple and common geometric features that visualize vector data information on maps. Publicly available services like OpenStreetMap or Google Maps allow a broader audience to create interactive maps that tell stories in a visual way.
+Chapter \ref{chapter:foundations} introduces the technical foundations for this thesis. It provides an overview by explaining cluster theory and comparing four main clustering algorithms. Further, a discussion on spatial data computation introduces space order and space decomposition methods, Quadtrees and the Geohash algorithm. Finally, an overview of foundational concepts in web mapping as coordinate systems, map projections and spatial data types is provided. 
 
-Visualizing thousands of markers on a single map are both challenges to human and digital computability. Obviously, when telling a story information needs to be told in a compact way. The human brain can only process a limited amount of data at the same time. Similarly, large amounts of data involve a higher burden on the computer components that participate in the web mapping process.
+Chapter \ref{chapter:state} discusses the state of the art of related technologies for the thesis. An explanation of a modern web mapping stack is given as well as the basics of Drupal \& mapping technologies. Further, the state of the art for client-side and server-side clustering technologies in web mapping is analyzed.
 
-An exemplary scenario for visualizing data on a map and the involved components is illustrated in Figure x (TODO):
+Chapter \ref{chapter:objectives} states the objectives for the thesis. It defines the goals to be accomplished as a result of the implementation part of the thesis.
 
-1. A client requests the server to display a map.
-2. The server receives and understands the request.
-3. The server fetches the map data from the database.
-4. The server delivers the map data and further markup to the client.
-5. The client receives the map data with the markup.
-6. A javascript library visualizes the map data on a map.
+Chapter \ref{chapter:realization} describes the realization of the server-side clustering algorithm. First, an analysis based on the objectives stated in the previous chapter is given. Subsequently, the Geohash-based clustering algorithm is defined. Finally, the architecture and implementation of the algorithm for Drupal is explained in detail.
 
-The important part from a performance perspective is that the whole data that is visualized on the client first needs to be fetched, processed and delivered by the server. Next, the client also receives all the data and visualizes it on its own using a javascript library. (TODO Reference chapter) Thus, large amounts of map data do not only mean more visual information to process for the user. They also have negative impact on performance on the involved components from server to client. As a result, this means slower response times. 
+Chapter \ref{chapter:use-cases} discusses the implementation of use cases for the realized server-side clustering algorithm.
 
-The task of clustering geospatial data for slippy maps on a per-request basis requires a performance-optimized approach that works in real-time. Details on this decision are explained in (TODOREF). Given these assumptions, this thesis touches clustering as a research discipline only on the surface. Though, an overview of the fundamental concepts for cluster analysis should be given to provide context for the decisions to be made.
+Chapter \ref{chapter:conclusions-outlook} finally evaluates the results of the thesis. It contains performance tests of the algorithm implementation and a further evaluation of the accomplishment of the objectives. Final conclusions are made and an outlook for future work is given.
