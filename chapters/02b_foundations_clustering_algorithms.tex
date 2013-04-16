@@ -22,7 +22,7 @@ The K-means is the most commonly used and simple algorithm based on a \textit{sq
 The time complexity of the K-means algorithm is linear to the number of points:
 \[time~complexity = \BigO{n}\]
 
-\begin{algorithm}[t]
+\begin{algorithm}[h]
   \SetKwInOut{Input}{input}
   \Input{the number of clusters, $K$}
   \BlankLine
@@ -39,17 +39,17 @@ The selection of initial centroids affects the final outcome of the clustering p
 
 Assigning points to the closest centroid requires a proximity measure, as explained in \ref{chapter:proximity}. Simple measures like the Euclidian distance are preferred, as this step needs to happen repeatedly within the algorithm. For each cluster, the centroid needs to be recalculated afterwards. This procedure is repeated until centroids do not change any more \cite{Jain99clusterreview, Meert06clustermaps}.
 
-Figure \ref{fig:clustering_k-means} illustrates a K-means clustering process.
+Algorithm \ref{alg:k-means} and figure \ref{fig:clustering_k-means} illustrates the K-means clustering process.
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=1\textwidth]{figures/clustering_k-means.png}
-    \caption{Convergence of K-means clustering: (a) initial data; (b) cluster membership after first loop; (c) cluster membership after second loop~\cite[p 99]{Jain88clustering}.}
+    \caption{Convergence of K-means clustering: (a) initial data; (b) cluster membership after first loop; (c) cluster membership after second loop. The different shapes of items represent their cluster membership.~\cite[p 99]{Jain88clustering}.}
     \label{fig:clustering_k-means}
   \end{center}
 \end{figure}
 
-
+\FloatBarrier
 \subsection{Agglomerative Hierarchical Clustering Algorithm}
 \label{chapter:clustering-hierarchical}
 
@@ -58,7 +58,13 @@ This exemplary, \textit{hierarchical clustering algorithm} creates a hierarchy o
 The time complexity of the agglomerative hierarchical clustering algorithm is:
 \[time~complexity = \BigO{n^3}\]
 
-\begin{algorithm}[t]
+At the beginning of the agglomerative hierarchical clustering algorithm, each point is assigned to its own cluster. A proximity matrix is calculated to store the distances for all pairs of data items based on the chosen proximity measure.
+
+To merge the two closest clusters, different heuristics may be applied. Most importantly, \textit{single-link} hierarchical clustering algorithms measure the distance between two clusters by the \textit{minimum} distance between all pairs of items from the two clusters. In contrast, \textit{complete-link} algorithms use the \textit{maximum} distance to create compact clusters and prevent chaining effects. Other approaches are based on \textit{average linkage} or \textit{Ward's method}. After merging the clusters, the proximity matrix will be updated, so that it reflects the current state of the clustering process. This procedure is repeated until all clusters have been merged, each step in the loop yields a level in the hierarchical clustering~\cite{Jain88clustering, Jain99clusterreview, Meert06clustermaps}.
+
+Algorithm \ref{alg:hierarchical} describes agglomerative hierarchical clustering and figure~\ref{fig:clustering-hierarchical-dendrogram} illustrates the clustering process visually as a dendrogram.
+
+\begin{algorithm}[h]
   {Assign each point to its individual cluster}\;
   {Compute the proximity matrix}\;
   \While{Number of clusters is larger than one}{
@@ -69,12 +75,6 @@ The time complexity of the agglomerative hierarchical clustering algorithm is:
   \label{alg:hierarchical}
 \end{algorithm}
 
-At the beginning of the agglomerative hierarchical clustering algorithm, each point is assigned to its own cluster. A proximity matrix is calculated to store the distances for all pairs of data items based on the chosen proximity measure.
-
-To merge the two closest clusters, different heuristics may be applied. Most importantly, \textit{single-link} hierarchical clustering algorithms measure the distance between two clusters by the \textit{minimum} distance between all pairs of items from the two clusters. In contrast, \textit{complete-link} algorithms use the \textit{maximum} distance to create compact clusters and prevent chaining effects. Other approaches are based on \textit{average linkage} or \textit{Ward's method}. After merging the clusters, the proximity matrix will be updated, so that it reflects the current state of the clustering process. This procedure is repeated until all clusters have been merged, each step in the loop yields a level in the hierarchical clustering~\cite{Jain88clustering, Jain99clusterreview, Meert06clustermaps}.
-
-Figure~\ref{fig:clustering-hierarchical-dendrogram} illustrates a Agglomerative Hierarchical clustering process as a dendrogram.
-
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.9\textwidth]{figures/clustering_hierarchical_dendrogram.pdf}
@@ -83,12 +83,12 @@ Figure~\ref{fig:clustering-hierarchical-dendrogram} illustrates a Agglomerative 
   \end{center}
 \end{figure}
 
-
+\FloatBarrier
 \subsection{Density-based clustering algorithms: DBSCAN}
 
 Density-based algorithms cluster regions of high density and separate them from regions with lower density. The density-based approach is different to the previously discussed distance-based methods. Those tend to perform well in the detection of spherical-shaped clusters, but discovering arbitrary shapes is a problem. Density-based algorithms overcome this limitation and are also insensitive to noise points, so that outliers get isolated.
 
-\begin{algorithm}[t]
+\begin{algorithm}[h]
   \While{Point is unclassified}{
     {Find points within region $\epsilon$}\;
     \If{number of points within region $> MinPts$} {
@@ -110,10 +110,10 @@ Density-based algorithms cluster regions of high density and separate them from 
 
 Any core point will be expanded to a cluster in the procedure until every point has been classified~\cite{Varlaro08spatial, Meert06clustermaps}.
 
-The quadratic time complexity of DBSCAN \BigO{n^2} can be optimized by using an indexing structure for the neighborhood queries~\cite{wiki:DBSCAN}:
+The quadratic time complexity of DBSCAN \BigO{n^2} can be optimized by using an indexing structure for the neighborhood queries, resulting in a logarithmic time complexity:~\cite{wiki:DBSCAN}
 \[time~complexity = \BigO{n \log{n} }\]
 
-Figure~\ref{fig:clustering-dbscan} illustrates a DBSCAN clustering process.
+Algorithm \ref{alg:dbscan} and figure~\ref{fig:clustering-dbscan} illustrate the DBSCAN clustering process.
 
 \begin{figure}[h]
   \begin{center}

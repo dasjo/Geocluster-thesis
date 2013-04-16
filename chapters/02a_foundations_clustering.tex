@@ -8,11 +8,11 @@
 
 Clustering is the task of grouping unlabeled data in an automated way. It can also be described as the unsupervised classification of patterns into groups. The techniques of cluster analysis are applied in numerous scenarios including data mining, document retrieval, image segmentation and pattern classification. They are used to solve different tasks including pattern-analysis, grouping, decision-making or machine-learning.
 
-Cluster analysis has been studied since the early beginnings of computer science and applies to a broad number of research fields. Different research communities have created a variety of vocabularies to describe methods related to clustering. The following terms are using in literature as synonyms for the term cluster analysis: Q-analysis, topology, grouping, comping, classification, numerical taxonomy and unsupervised pattern recognition.
+Cluster analysis has been studied since the early beginnings of computer science and applies to a broad number of research fields. Different research communities have created a variety of vocabularies to describe methods related to clustering. The following terms are used in literature as synonyms for the term cluster analysis: Q-analysis, topology, grouping, comping, classification, numerical taxonomy and unsupervised pattern recognition.
 
 As indicated, clustering is a wide and generic term. Often, it is used to refer to specific concepts which are appropriate for solving specific tasks. This means, that efficient clustering algorithms have been developed and studied over the years for certain research fields. While such algorithms might perform well under certain circumstances, they might be completely inappropriate for other use cases. Imagine, an algorithm that  fits image segmentation well but is less useful in machine-learning~\cite{Meert06clustermaps, Jain99clusterreview}.
 
-Clustering is a general concept that applies to multivariate data. Spatial data in this sense is a special case, and 2-dimensional spatial data reduces the problem space even further to planar space. Figure~\ref{fig:clusters} visualizes such an example of clusters of point patterns in two dimensional space. Humans can understand and perform this kind of clustering tasks competitively whereas clustering in high-dimensional space is difficult for humans to obtain. 
+Clustering is a general concept that applies to multivariate data. Spatial data in this sense is a special case, and 2-dimensional spatial data reduces the problem space even further to planar space. Figure~\ref{fig:clusters} visualizes such an example of clusters of point patterns in two dimensional space. Humans can understand and perform this kind of clustering tasks in an efficient way, whereas clustering in high-dimensional space is difficult for humans to obtain. 
 
 \begin{figure}[h]
   \begin{center}
@@ -30,8 +30,8 @@ Clustering is the task of aggregating items (also described as features) into cl
  
 \begin{quote}
 \begin{enumerate}
-\item pattern representation \\(optionally including feature extraction and/or selection), 
-\item definition of a pattern proximity measure \\appropriate to the data domain, 
+\item pattern representation (optionally including feature extraction and/or selection), 
+\item definition of a pattern proximity measure appropriate to the data domain, 
 \item clustering or grouping, 
 \item data abstraction (if needed), and 
 \item assessment of output (if needed). 
@@ -44,14 +44,14 @@ Clustering is the task of aggregating items (also described as features) into cl
 
 K-means, one of the oldest and most widely used clustering algorithms was introduced already in 1967~\cite{MacQueen67kmeans, Meert06clustermaps}. Tryon and Bailey (1970) wrote one of the first books on cluster analysis. In 1973, Anderberg published ``Cluster analysis for applications'', a book that Jain and Dubes describe as ``the most comprehensive book for those who want to use cluster analysis''~\cite{Jain88clustering}.  While Tryon and Bailey focus on a single clustering approach (BC TRY), Anderberg already gives a comprehensive overview of clustering methods, strategies and a comparative evaluation of cluster analysis methods.
 
-Clustering algorithms were improved and developed further over time, i.e. to account for performance issues. Prominent algorithms in that area include CLARANS~\cite{Ng94CLARANS} and BIRCH~\cite{Zhang96BIRCH} - they have a time complexity linear in the number of patterns. A popular, density based clustering algorithm is DBSCAN~\cite{Ester96DBSCAN}. Jain and Dubes summarize hierarchical and partitional clustering approaches in ``Algorithms for Clustering Data'' (1988) with a special focus on applications in image processing. Numerous subsequent publications on cluster analysis are released continuously~\cite{Jain99clusterreview}. 
+Clustering algorithms were improved and developed further over time, i.e. to account for performance issues. Prominent algorithms in that area include CLARANS~\cite{Ng94CLARANS} and BIRCH~\cite{Zhang96BIRCH} - they have a time complexity linear to the number of patterns. A popular, density based clustering algorithm is DBSCAN~\cite{Ester96DBSCAN}. Jain and Dubes summarize hierarchical and partitional clustering approaches in ``Algorithms for Clustering Data'' (1988) with a special focus on applications in image processing. Subsequent publications on cluster analysis are released continuously~\cite{Jain99clusterreview}. 
 
 
 
 \subsection{Cluster types}
 \label{chapter:cluster-types}
 
-Clusters are groupings of similar objects. Different models of interpretation for clusters exist: most notably, they can be classified into different types of clusters as illustrated in figure \ref{fig:cluster-types}:
+Clusters are groupings of similar objects. Different models of interpretation for clusters exist: most notably, they can be classified into different types of clusters as illustrated in figure \ref{fig:cluster-types}. These type are:
 
 \begin{itemize}
 
@@ -96,6 +96,8 @@ Literature research reveals classifications of clustering techniques according t
   \end{center}
 \end{figure}
 
+In the following, we will discuss aspects of cluster theory which are used to differentiate clustering techniques:
+
 \begin{itemize}
 
 \item \textbf{Hierarchical versus Partitional}. Whether a clustering is nested, is the classic differentiation between clustering techniques. \textit{Partitional clustering} divides the data into a single set of non-overlapping clusters. It usually is driven by an \textit{iterative} approach that optimizes the result.
@@ -119,7 +121,7 @@ Further aspects include \textit{monothetic versus polythetic} and \textit{increm
 
 Similarity is fundamental to the definition of a cluster. In order to measure similarity between clusters, clustering algorithms evaluate the proximity. Continuous data requires different proximity measurements than categorical data.
 
-For continuos data, the proximity between items is typically quantified by dissimilarity in terms of distance measures. The three main distance functions are visualized in figure~\ref{fig:clustering-proximity} and explained as follows\cite{Meert06clustermaps}:
+For continuos data, the proximity between items is typically quantified by dissimilarity in terms of distance measures. The three main distance functions are visualized in figure~\ref{fig:clustering-proximity} and explained as follows~\cite{Meert06clustermaps}. $x$ and $y$ represent the spatial position of a data item that is part of the clustering process, indexed by $i$.
 
 \begin{figure}[h]
   \begin{center}
