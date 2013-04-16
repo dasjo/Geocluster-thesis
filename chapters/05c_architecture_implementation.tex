@@ -26,22 +26,6 @@ Geocluster has been implemented following a number of principles:
 
 \end{itemize}
 
-While using APIs and object-oriented programming are familiar concepts, \textit{hooks} are a Drupal-specific concept. They basically allow modules to interact with each other in a procedural way in which many parts of the Drupal system are built.
-
-\begin{quote}
-Drupal's module system is based on the concept of "hooks". A hook is a PHP function that is named foo\_bar(), where "foo" is the name of the module (whose filename is thus foo.module) and "bar" is the name of the hook. Each hook has a defined set of parameters and a specified result type.
-
-To extend Drupal, a module need simply implement a hook. When Drupal wishes to allow intervention from modules, it determines which modules implement a hook and calls that hook in all enabled modules that implement it.\footnote{\url{http://api.drupal.org/api/drupal/includes!module.inc/group/hooks/7}}
-\end{quote}
-
-The term \textit{patch} describes a way to submit code changes used within the Drupal and other open source communities:
-
-\begin{quote}
-Patches are pieces of code that solve an existing issue. In fact, patches describe the changes between a before and after state of either a module or core. By applying the patch the issue should no longer exist.
-
-Patches are used to maintain control-ability over the entire Drupal project. While Drupal is distributed via the git version control system, patches are additional pieces of code that focus on a single change request and therefore are easily tested, reviewed and documented.\footnote{\url{http://drupal.org/patch}}
-\end{quote}
-
 
 
 \subsection{Architecture overview}

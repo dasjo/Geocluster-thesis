@@ -12,9 +12,9 @@ Digital mapping applications on the Internet are strongly emerging. Big players 
 
 Maps allow telling stories and communicating data in a visual way. Using open source tools such as TileMill\footnote{\url{http://mapbox.com/tilemill}} and online services like CloudMade\footnote{\url{http://cloudmade.com/ }}, more and more people are able to create their own custom maps. The Free and Open Source content management system and framework Drupal\footnote{\url{http://drupal.org}} provides tools for adding, editing and visualizing geographic data on maps. This allows to integrate interactive map applications into web sites.
 
-Visualizing thousands of points on a single map are both challenges to human and digital computability. Obviously, when telling a story, information needs to be told in a compact way as the human brain can only process a limited amount of data at the same time. Similarly, large amounts of data involve a higher burden on the computer components that participate in the web mapping process.
+Maps provide a birds-eye-view on the geography and information captured in such system. Sometimes, they are used to get a quick overview of points-of-interest in a certain area. If a large amount of information is contained in such an area, problems in terms of computability and visual clutter arise: visualizing thousands of points on a single map both challenge human and computers. Obviously, when telling a story, information needs to be told in a compact way as the human brain can only process a limited amount of data at the same time. Similarly, large amounts of data involve a higher burden on the computer components that participate in the web mapping process~~\cite{noellenburg11geovis, Delort10vis}.
 
-Clustering\footnote{\url{http://en.wikipedia.org/wiki/Cluster_analysis}} is a technique for grouping objects with similarities. Various client-side Javascript libraries like Leaflet.markercluster\footnote{\url{https://github.com/Leaflet/Leaflet.markercluster}} exist for clustering points on maps. This enhances performance and readability of data-heavy map applications. But still, all data needs to be transferred to the client and processed on a potentially slower end user device. By clustering data on the server-side, the load is shifted from the client to the server which allows displaying larger amounts of data in a performant way. Professional services like maptimize\footnote{\url{http://www.maptimize.com}} provide such a functionality, while in the open source space little libraries and frameworks exist for server-side clustering of geospatial data.
+Clustering\footnote{\url{http://en.wikipedia.org/wiki/Cluster_analysis}} is a technique for grouping objects with similarities that can be used to reduce visual clutter as described before. Various client-side Javascript libraries like Leaflet.markercluster\footnote{\url{https://github.com/Leaflet/Leaflet.markercluster}} exist for clustering points on maps. This enhances performance and readability of data-heavy map applications. But still, all data needs to be transferred to the client and processed on a potentially slower end user device. By clustering data on the server-side, the load is shifted from the client to the server which allows displaying larger amounts of data in a performant way. Professional services like maptimize\footnote{\url{http://www.maptimize.com}} provide such a functionality, while in the open source space little libraries and frameworks exist for server-side clustering of geospatial data.
 
 In order to create interactive maps based on large data sets, this thesis evaluates and implements a performance-optimized server-side clustering algorithm for Drupal.
 
@@ -25,10 +25,14 @@ Chapter \ref{chapter:foundations} introduces the technical foundations for this 
 
 Chapter \ref{chapter:state} discusses the state of the art of related technologies for the thesis. An explanation of a modern web mapping stack is given as well as the basics of Drupal \& mapping technologies. Further, the state of the art for client-side and server-side clustering technologies in web mapping is analyzed.
 
-Chapter \ref{chapter:objectives} states the objectives for the thesis. It defines the goals to be accomplished as a result of the implementation part of the thesis.
+Chapter \ref{chapter:objectives} states the objectives and exemplary use cases for the thesis. It defines the goals to be accomplished as a result of the implementation part of the thesis.
 
 Chapter \ref{chapter:realization} describes the realization of the server-side clustering algorithm. First, an analysis based on the objectives stated in the previous chapter is given. Subsequently, the Geohash-based clustering algorithm is defined. Finally, the architecture and implementation of the algorithm for Drupal is explained in detail.
 
 Chapter \ref{chapter:use-cases} discusses the implementation of use cases for the realized server-side clustering algorithm.
 
-Chapter \ref{chapter:conclusions-outlook} finally evaluates the results of the thesis. It contains performance tests of the algorithm implementation and a further evaluation of accomplishing the defined objectives. Final conclusions are made and an outlook on future work is given.
+Chapter \ref{chapter:conclusions-outlook} finally evaluates the results of the thesis. It contains performance tests and a further evaluation on how the defined objectives have been accomplished. Final conclusions are made and an outlook on future work is given.
+
+
+
+
