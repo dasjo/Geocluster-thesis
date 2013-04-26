@@ -100,8 +100,37 @@ Figure \ref{fig:map-type-voronoi} show an exemplary voronoi map\footnote{Voronoi
 
 \end{itemize}
 
+Self-organizing maps (SOM) can also be used to visualize clusters of data. But instead of displaying data on a geographic map, self-organizing maps create their own virtual space in order to represent information~\cite{noellenburg11geovis}.  
+
+
 \subsection{Cluster visualization techniques}
 \label{chapter:cluster-vis}
+
+The previous chapter has shown different kinds of map visualization techniques appropriate for displaying clustered data. In the end, each visualization will show (clustered) items on a map as objects with attributes like a particular shape or coloring. As clusters contain aggregated information, the task is to find the right way for visualizing the cluster items themselves. From the examples so far, we have seen variations in size, shape and color which expose information on the cluster items being visualized on the map. In the following, multivariate data visualization techniques will be evaluated for visualizing cluster items on a map.
+
+In chapter \ref{vis-data-techniques}, a classification of visualization techniques by data type and interaction technique has been presented. Ke-Bing Zhang~\cite{zhang07thesis} has written about ``Visual Cluster Analysis in Data Mining'' where he list an extensive list of multivariate data visualization techniques. Potentially any such visualization technique can be used, but the frame of the map puts constraints in terms of space on the representation of individual items. Iconic displays are a simple way to visualize data, which also prevents clutter. Dense Pixel displays and geometric visualizations like charts can be used to encode more complex information.
+
+\begin{itemize}
+
+\item \textbf{Icon-based, Glyphs}
+
+Matthew O Ward\cite{ward02glyphs} defines \textit{glyphs} as ``graphical entities that convey one or more data values via attributes such as shape, size, color, and position''. While the work of Otto Neurath on ISOTYPE~\cite{neurath} (1930s) can be seen as fundamental for pictorial statistics, the best-known literature reference to glyphs is ``Chernoff faces''\cite{chernoff73}. As indicated in (e) of figure \ref{fig:glyphs-ward}, data is encoded into properties of the face icon, such as shape of nose, mouth, eyes. Other fundamental glyph-based techniques include stick figures~\cite{stickfigures}, color icons~\cite{coloricons}, Hyperbox~\cite{hyperbox} and shape coding~\cite{shapecoding}. Figure \ref{fig:glyphs-ward} extends this list by showing examples of glyphs that Ward collected for his taxonomy of glyphs placement strategies\cite{ward02glyphs}.
+
+\begin{figure}[h]
+  \begin{center}
+    \hspace*{-1cm}\includegraphics[width=1.2\textwidth]{figures/glyphs.pdf}
+    \caption{Examples of glyphs. Top row: (a) variations on profiles; (b) stars/metroglyphs; and (c) stick figures and trees.Bottom row: (d) autoglyphs and boxes; (e) faces; and (f) arrows and weathervanes.~\cite{ward02glyphs}.}
+    \label{fig:glyphs-ward}
+  \end{center}
+\end{figure}
+
+Reducing visual clutter as explained in chapter \ref{clutter-reduction} also matters for glyphs, especially when putting them on a map. A trade-off between information-richness vs. simplicity and clarity has to be made. As Zhang writes ``the amount of data increasing, the user hardly makes any sense of most properties of data intuitively, this is because the user cannot focus on the details of each icon when the data scale is very large''~\cite{zhang07thesis}.
+
+\item \textbf{Pixel-oriented}
+
+\item \textbf{Diagrams}
+
+\end{itemize}
 
 
 
@@ -114,3 +143,12 @@ box, smooth histogram, step histogram)~\cite{ElmqvistDGHF08}.}
     \label{fig:glyphs-zame}
   \end{center}
 \end{figure}
+
+
+
+
+
+
+
+
+
