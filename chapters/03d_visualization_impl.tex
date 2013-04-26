@@ -103,7 +103,7 @@ Figure \ref{fig:map-type-voronoi} show an exemplary voronoi map\footnote{Voronoi
 Self-organizing maps (SOM) can also be used to visualize clusters of data. But instead of displaying data on a geographic map, self-organizing maps create their own virtual space in order to represent information~\cite{noellenburg11geovis}.  
 
 
-\subsection{Cluster visualization techniques}
+\subsection{Cluster visualization techniques for maps}
 \label{chapter:cluster-vis}
 
 The previous chapter has shown different kinds of map visualization techniques appropriate for displaying clustered data. In the end, each visualization will show (clustered) items on a map as objects with attributes like a particular shape or coloring. As clusters contain aggregated information, the task is to find the right way for visualizing the cluster items themselves. From the examples so far, we have seen variations in size, shape and color which expose information on the cluster items being visualized on the map. In the following, multivariate data visualization techniques will be evaluated for visualizing cluster items on a map.
@@ -119,20 +119,15 @@ Matthew O Ward\cite{ward02glyphs} defines \textit{glyphs} as ``graphical entitie
 \begin{figure}[h]
   \begin{center}
     \hspace*{-1cm}\includegraphics[width=1.2\textwidth]{figures/glyphs.pdf}
-    \caption{Examples of glyphs. Top row: (a) variations on profiles; (b) stars/metroglyphs; and (c) stick figures and trees.Bottom row: (d) autoglyphs and boxes; (e) faces; and (f) arrows and weathervanes.~\cite{ward02glyphs}.}
+    \caption{Examples of glyphs. Top row: (a) variations on profiles; (b) stars/metroglyphs; and (c) stick figures and trees.
+Bottom row: (d) autoglyphs and boxes; (e) faces; and (f) arrows and weathervanes.~\cite{ward02glyphs}.}
     \label{fig:glyphs-ward}
   \end{center}
 \end{figure}
 
-Reducing visual clutter as explained in chapter \ref{clutter-reduction} also matters for glyphs, especially when putting them on a map. A trade-off between information-richness vs. simplicity and clarity has to be made. As Zhang writes ``the amount of data increasing, the user hardly makes any sense of most properties of data intuitively, this is because the user cannot focus on the details of each icon when the data scale is very large''~\cite{zhang07thesis}.
+Some glyph types have been created to identify clusters or similarities by plotting them side-by-side on a 2-dimensional plane, a technique which is referred to as mosaic-based rendering. Stick figures and mosaic metaphors are examples in that field~\cite{stickfigures, nocke05mosaic}. One the other hand, reducing visual clutter as explained in chapter \ref{clutter-reduction} also matters for glyphs, especially when putting them on a map. A trade-off between information-richness vs. simplicity and clarity has to be made. As Zhang writes ``the amount of data increasing, the user hardly makes any sense of most properties of data intuitively, this is because the user cannot focus on the details of each icon when the data scale is very large''~\cite{zhang07thesis}. We can compare this to the map use cube presented in chapter \ref{chapter:foundations-vis}: more complex glyph types seem to be better suited for scientific purposes which can be related to private uses, while simpler glyph types can be used for presenting data to a public audience.
 
-\item \textbf{Pixel-oriented}
-
-\item \textbf{Diagrams}
-
-\end{itemize}
-
-
+Examples for uses of simple icons and glyph types for clustered data on maps can be found in JavaScript mapping libraries as seen in chapter \ref{chapter:client-side-web-mapping}. These are usually based on a simple icon or geometric shape like a circle or marker and use color coding and size variations as indicators for underlying information. Figure \ref{fig:glyphs-zame} visualizes eight simple glyphs~\cite{ElmqvistDGHF08}. Further examples are scaled data values and scaled dots \cite{web:scaled-data-value}, as well as the proportional symbol map \cite{vislecture}.
 
 \begin{figure}[h]
   \begin{center}
@@ -143,6 +138,84 @@ box, smooth histogram, step histogram)~\cite{ElmqvistDGHF08}.}
     \label{fig:glyphs-zame}
   \end{center}
 \end{figure}
+
+
+\item \textbf{Pixel-oriented}
+
+Pixel-oriented techniques display the most possible information at a time but mapping each attribute value of data to a single colored pixel. Color mapping approaches such as linear variation of brightness, maximum variation of hue and constant maximum saturation are used to color pixels which are arranged adequately in limited space. By providing an overview of large amounts of data, pixel-oriented display techniques are suitable for a variety of data mining tasks of large databases~\cite{zhang07thesis}.
+
+The first pixel-oriented technique was presented by Keim~\cite{keim94pixel} as part of the VisDB system. Large amounts of multidimensional data could be represented as Spirals and Axes. Figure \ref{fig:pixel-spiral} illustrates how a spiral would be constructed and figure \ref{fig:pixel-axes} shows a rendered result of the axes technique. Further developments include the Recursive Pattern Technique \cite{keim95recpat} and the Circle Segments Technique \cite{Ankerst96circlesegments}. Figure \ref{fig:pixel-circle} visualizes such a circle which represents about 265,000 50-dimensional data items.
+
+While no real-world examples have been identified during the research, using pixel-oriented techniques for visualizing complex clusters on a map seems possible. As the visualization relies on a large amounts of multidimensional data being present within clusters, the clustering algorithm would need to provide such required data. Performance implications also need to be considered, as potentially multiple clusters have to be visualized on a map, sometimes even in real-time.
+
+\hspace*{-1cm}\parbox [h]{0.33\textwidth }{
+    \includegraphics [width=\linewidth]{figures/pixel_keim_spiral.pdf}
+    \captionof {figure}{Spiral~\cite{keim94pixel}}
+    \label{fig:pixel-spiral}
+}
+\hfill
+\hspace{0.2cm}
+\parbox [h]{0.3\textwidth }{
+    \includegraphics [width=\linewidth]{figures/pixel_keim_axes.pdf}
+    \captionof {figure}{Axes \cite{keim94pixel}}
+    \label{fig:pixel-axes}
+}
+\hfill
+\hspace{0.2cm}
+\parbox [h]{0.3\textwidth }{
+    \includegraphics [width=\linewidth]{figures/pixel_keim_circle.pdf}
+    \captionof {figure}{Circle \cite{Ankerst96circlesegments}}
+    \label{fig:pixel-circle}
+}
+
+
+\item \textbf{Geometric techniques \& Diagrams}
+
+Geometric techniques produce useful and insightful visualization by using geometric transformations and projects of the data.  Diagrams are algorithmically drawn graphics that visualize data. This section lists a selection of geometric techniques for multivariate data presented by Ke-Bing Zhang~\cite{zhang07thesis}, diagram types described by Dieter Ladenhauf~\cite{ladenhauf12dia} and related examples found in additional literature and on the web as stated in the individual references.
+
+Line charts visualize data as lines by connecting data points of the corresponding values. They are used to display trends over time. Figure \ref{fig:did-map-sparklines} illustrates surface temperature anomalies from NASA's GISS as Spark line map~\cite{web:sparkmaps}. The Sparkline is a reduced line chart without axes and coordinates. It presents the general shape of variation in a simple and highly condensed way~\cite{wiki:sparkline}.
+
+
+bar chart
+http://www.ugandawatch.org/
+
+pie chart
+http://kartograph.org/showcase/charts/
+
+map hull
+\cite{Cristani08geoimagemaps}
+
+
+\parbox [h]{0.4\textwidth }{
+    \includegraphics [width=\linewidth]{figures/dia_map_sparklines.png}
+    \captionof {figure}{Spark line map}
+    \label{fig:did-map-sparklines}
+}
+\hfill
+\hspace{0.5cm}
+\parbox [h]{0.4\textwidth }{
+    \includegraphics [width=\linewidth]{figures/dia_map_barchart.png}
+    \captionof {figure}{Bar chart map}
+    \label{fig:did-map-barchart}
+}
+
+
+\parbox [h]{0.4\textwidth }{
+    \includegraphics [width=\linewidth]{figures/dia_map_piechart.pdf}
+    \captionof {figure}{Pie chart map}
+    \label{fig:did-map-piechart}
+}
+\hfill
+\hspace{0.5cm}
+\parbox [h]{0.4\textwidth }{
+    \includegraphics [width=\linewidth]{figures/dia_map_hull.pdf}
+    \captionof {figure}{Convex hull map}
+    \label{fig:did-map-hull}
+}
+
+
+\end{itemize}
+
 
 
 
