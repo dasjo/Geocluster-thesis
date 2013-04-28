@@ -82,6 +82,7 @@ Figure \ref{fig:geocluster-class-diagram} illustrates how the \textit{Geocluster
 
 
 \subsection{Configuration of the clustering process}
+\label{chapter:geocluster-config}
 
 The Geocluster algorithm depends on three inputs: the data points to cluster, the current zoom level and the minimum cluster distance. The zoom level is passed by the bounding box strategy as a request parameter. In order to configure the rest of the inputs required by the algorithm, a user interface for configuration of the clustering process has been created using the Views plugin system.
 
@@ -154,6 +155,7 @@ Two helper classes support the clustering task. $GeoclusterHelper$ provides a se
 
 
 \subsection{Client-side Geocluster Visualization component}
+\label{chapter:geocluster-vis}
 
 A simple Geocluster visualization component has been built to support the display of clustered markers on interactive maps based on the output of the server-side clustering implementation. It extends the Bounding Box strategy of the Leaflet GeoJSON module in oder to create numbered markers that visualize the cluster sizes. Clicking on a clustered marker will zoom into the map in order to explore the data on a more granular level. Figure \ref{fig:map-clustered} demonstrates an example screenshot of the Geocluster visualization. Compare this with an unclustered map, containing the same amount of items in figure \ref{fig:map-unclustered}
 

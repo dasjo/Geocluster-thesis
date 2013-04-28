@@ -6,11 +6,23 @@
 
 \chapter*{Abstract}
 
-TODO
+This thesis investigates the possibility of creating a server-side clustering solution for mapping in Drupal based on Geohash. Maps visualize data in an intuitive way. Performance and readability of digital mapping applications decreases when displaying large amounts of data. Client-side clustering uses JavaScript to group overlapping items but server-side clustering is needed when too many items slow down processing and create network bottle necks. The main goals are: implement real-time, server-side clustering for up to 1,000,000 items within 1 second and visualize clusters on an interactive map.
+
+Clustering is the task of grouping unlabeled data in an automated way. Algorithms from cluster analysis are researched in order to create an algorithm for server-side clustering with maps. The proposed algorithm uses Geohash for creating a hierarchical spatial index that supports the clustering process. Geohash is a latitude/longitude geocode system based on the Morton order. Coordinates are encoded as string identifiers with a hierarchical spatial structure. The use of a Geohash-based index allows to significantly reduce the time complexity of the real-time clustering process.
+
+Three implementations of the clustering algorithm are realized as the Geocluster module for the free and open source content management system and framework Drupal. The first algorithm implementation based on PHP, Drupal's scripting language, doesn't scale well. A second MySQL-based clustering has been tested to scale up to 100,000 items within one second. Finally, clustering using Apache Solr scales beyond 1,000,000 items and satisfies the main research goal of the thesis.
+
+In addition to performance considerations, visualization techniques for putting clusters on a map are researched and evaluated in an exploratory analysis. Map types as well as cluster visualization techniques are presented. The evaluation classifies the stated techniques for cluster visualization on maps and provides a foundation for evaluating the visual aspects of the Geocluster implementation.
 
 \newpage
 
 % and in German
 \chapter*{Kurzfassung}
 
-TODO
+Diese Diplomarbeit erforscht die technische M\"{o}glichkeit zur Erstellung einer Geohash-basierten, server-seitigen Cluster-L\"{o}sung f\"{u}r Kartenanwendungen in Drupal. Landkarten visualisieren Daten auf intuitive Weise. Die Performanz und Lesbarkeit von digitalen Kartenanwendungen nimmt jedoch ab, wenn umfangreiche Datenmengen dargestellt werden. Mittels JavaScript gruppiert Client-seitiges Clustering \"{u}berlappende Punkte zwecks Lesbarkeit, ab einer gewissen Datenmenge verlangsamt sich jedoch die Verarbeitungsgeschwindigkeit und die \"{u}bertragungsgeschwindigkeit des Netzwerk stellt einen Flaschenhals dar. Die zentrale Forschungsfrage ist daher: Implementierung von server-seitigem Clustering in Echtzeit f\"{u}r bis zu 1.000.000 Punkten innerhalb einer Sekunde und die Visualisierung von Clustern auf einer interaktiven Karte.
+
+Clustering ist ein Verfahren zur automatisierten Gruppierung in Datenbest\"{a}nden. Algorithmen der Clusteranalyse werden evaluiert, um einen geeigneten Algorithmus f\"{u}r das server-seitige Clustering auf Landkarten zu schaffen. Der entworfene Algorithmus nutzt Geohash zur Erstellung eines hierarchischen, Spatialindex welcher das Clustern unterst\"{u}tzt. Geohash ist kodiert Latitude/Longitude Koordinaten mithilfe der Morton-Kurve in Zeichenketten mit r\"{a}umlich-hierarchischer Struktur. Mithilfe eines Geohash-basierten Index kann die Zeitkomplexit\"{a}t des Echtzeit-Clusterings drastisch reduziert werden.
+
+3 Varianten des Clustering Algorithmus wurden als Geocluster Modul f\"{u}r das Content Management System und Framework Drupal implementiert. Die erste, PHP-basierte Variante skaliert nicht. Die zweite Variante mittels MySQL konnte in Tests bis 100.000 Punkte unter 1 Sekunde clustern. Schlussendlich skaliert das Clustern mit Apache Solr bis \"{u}ber 1.000.000 Elemente und erf\"{u}llt somit das prim\"{a}re Forschungsziel.
+
+Neben der Performance-Analyse wurden auch Techniken zur Visualisierung von Clustern auf Karten erforscht und im Rahmen einer explorativen Studie verglichen. Verschiedene Kartentypen als auch Visualisierungsformen von Clustern werden pr\"{a}sentiert. Die Evaluierung klassifiziert die Techniken zwecks der Darstellung auf Karten und bildet somit die Grundlage f\"{u}r die Diskussion der Geocluster Implementierung.  

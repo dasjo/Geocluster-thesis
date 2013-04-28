@@ -38,9 +38,9 @@ Drupaljobs is provided by epiqo as a show case for the Recruiter distribution. I
 
 \begin{enumerate}
 
-\item A \textbf{search bar (1)} above the content region.
-\item \textbf{Facetted filters (2)} in the left sidebar.
-\item The \textbf{search results (3)} as job teasers matching the search and filters.
+\item [(1)] A \textbf{search bar} above the content region.
+\item [(2)] \textbf{Facetted filters} in the left sidebar.
+\item [(3)] The \textbf{search results} as job teasers matching the search and filters.
 
 \end{enumerate}
 
@@ -54,7 +54,7 @@ For scalability reasons, the job search functionality of Recruiter is based on A
   \end{center}
 \end{figure}
 
-The GeoRecruiter use case consists of several geo-related additions to the Recruiter distribution. As stated before, the customizations were prototyped using a Drupaljobs test installation.
+The GeoRecruiter use case consists of several geo-related additions to the Recruiter distribution. As previously stated, the customizations have been prototyped using a Drupaljobs test installation.
 
 \begin{itemize}
 
@@ -62,9 +62,9 @@ The GeoRecruiter use case consists of several geo-related additions to the Recru
 
 \item \textbf{Import test data}: Two sets of real-world geospatial test data have been prepared for the Drupaljobs test site. A set of 10,000 world-wide cities was created based on a dataset from GeoNames.org\footnote{\url{http://download.geonames.org/export/dump/cities1000.zip}}. Another set of 100,000 of U.S.-specific landmarks is based on a dataset from the U.S. Board on Geographic Names\footnote{\url{http://geonames.usgs.gov/docs/stategaz/NationalFile_20130404.zip}}. The kind of data isn't necessarily related to but will be mapped to job offers. This approach was taken due to the lack of a geospatially annotated datasets of job offers being available for testing purposes. Next, the test data was cleaned from errors and imported into the adapted Drupaljobs test installation. The import process was facilitated by using the Feeds module\footnote{\url{http://drupal.org/project/feeds}} which allows to import data into a Drupal site from external data sources like RSS feeds or in this particular case: CSV files.
 
-\item \textbf{Configure Geocluster Solr}: The server-side clustering component explained in \ref{chapter:architecture-implementation} has been installed on the Drupaljobs test instance. The job search has been configured for clustering based on Apache Solr and Search API. Finally, a map visualizes the clustered job search results using Views GeoJSON and Leaflet. In order to enhance the representation of clusters and to experiment with interaction, the client-side clustering library Leaflet.markercluster has been combined with the server-side clustering approach. The library has been introduced in chapter \ref{chapter:client-side-web-mapping}. A discussion on the effectiveness of such a combination is discussed in chapter TODOREF.
+\item \textbf{Configure Geocluster Solr}: The server-side clustering component explained in \ref{chapter:architecture-implementation} has been installed on the Drupaljobs test instance. The job search has been configured for clustering based on Apache Solr and Search API. Finally, a map visualizes the clustered job search results using Views GeoJSON and Leaflet. In order to enhance the representation of clusters and to experiment with interaction, the CSS styles of client-side clustering library Leaflet.markercluster have been adapted and extended with additional colors for large clusters.
 
-\item \textbf{Compare with client-side clustering}: In order to measure the effectiveness of the server-side clustering approach, a client-side clustering solution has been implemented for Drupaljobs as well. The client-side clustered map is based on a blog post by Ian Whitcomb of LevelTen~\cite{blog:leaflet-made-to-order}. For querying such a large dataset, he recommends circumventing the Views module and directly querying the database. The client-side clustering and visualization is again realized by the Leaflet.markercluster.
+\item \textbf{Compare with client-side clustering}: In order to measure the effectiveness of the server-side clustering approach, a client-side clustering solution has been implemented for Drupaljobs as well. The client-side clustered map is based on a blog post by Ian Whitcomb of LevelTen~\cite{blog:leaflet-made-to-order}. For querying such a large dataset, he recommends circumnavigating the Views module and directly querying the database. The client-side clustering and visualization is again realized by the Leaflet.markercluster.
 
 \end{itemize}
 

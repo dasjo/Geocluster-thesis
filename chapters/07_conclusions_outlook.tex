@@ -40,7 +40,6 @@ A deeper analysis of the PHP-based algorithm clearly shows that the most time-co
 Given the numbers, the performance criterion of this thesis could be fulfilled. While the PHP-based implementation isn't really usable, MySQL-based and Solr-based clustering can be used to create performant, interactive maps with Drupal for item sets up to at least 1,000,000 items. While we know that MySQL-based clustering only scales up to 100,000 items, the threshold for Solr-based clustering wasn't determined as tests were limited up to 1,000,000 items. It is expected that there is room for improvements and optimizations for all of the algorithms.
 
 
-
 \textbf{Real-world scenario}. In a second step, the performance of Geocluster has been evaluated based using a more realistic setup. The Drupaljobs test site based on Recruiter, explained in chapter \ref{chapter:use-case-georecruiter}, was used as a test environment. A scenario for performance testing the map was created using the Selenium IDE\footnote{\url{http://docs.seleniumhq.org/projects/ide/}} for the Firefox\footnote{\url{http://www.mozilla.org/en-US/firefox}} web browser. Selenium IDE is an integrated development environment, that allows to record and play back tests. In combination with the Firebug\footnote{\url{http://getfirebug.com/}} browser extension, the response times for the map interaction have been captured and evaluated.
 
 The test scenario opens the website with a map that displays job offers using either the MySQL-based or the Solr-based clustering algorithm. The larger test data set of the Drupaljobs test site with 100,000 items within the U.S. was chosen. As the previous performance test indicates, this amount of items can't be processed efficiently using the PHP-based implementation of the clustering algorithm, this is why PHP-based and Solr-based clustering were evaluated. In comparison to the previous performance test, this test aims at simulating standard user behavior in the browser. Thus, a Selenium script captured a sequence of user interaction on the map as zooming into particular areas of the map. In total, one sequence consists of the zooming into 4 different areas of the map on 5 zoom levels and zooming out again which sums up to 21 request per sequence. As the bounding box strategy of the Javascript mapping automatically applies a filter to the query for the current viewport, a different sub-set of the 100,000 items will get queried per request. The test sequence was repeated 5 times for each of the two clustering algorithm implementations and the results captured using the Firebug Net Panel log.
@@ -55,25 +54,57 @@ The test scenario opens the website with a map that displays job offers using ei
 
 The results of the real-world test scenario have been evaluated into a histogram that shows the distribution of response times and which is illustrated in figure \ref{fig:real-performance}. The Solr-based clustering implementation shows a highest frequency of response times under 400 milliseconds, while the response times of the MySQL-based implementation have a highest frequency below 750 and 800 milliseconds. These real-world test results yield slower response times than the previous performance test where Solr-based response times where constantly below 300 ms. This is might be caused by external factors: in the first case, a plain Drupal installation was being used and queried locally from the server, while the second test case was built on top of an existing Drupal site with a larger number of modules installed and queries where done from a local machine, adding network latency.
 
-Another performance-related aspect is cachability of responses and results. Apache Solr and Drupal itself already incorporate various caching layers. Caching clustered results for the server-side clustering solution mainly depends on the parameters of the Bounding Box strategy. As currently, every minor change to the bounding box will issue a different request to the server, these can't be cached efficiently. A possible solution that has been discussed\footnote{\url{http://drupal.org/node/1868982}}, is to define fixed steps for the bounding box in order to produce repeating requests that can be cached.  
+Another performance-related aspect is cachability of responses and results. Apache Solr and Drupal itself already incorporate various caching layers. Caching clustered results for the server-side clustering solution mainly depends on the parameters of the Bounding Box strategy. As currently, every minor change to the bounding box will issue a different request to the server, these can't be cached efficiently. A possible solution that has been discussed\footnote{\url{http://drupal.org/node/1868982}}, is to define fixed steps for the bounding box in order to produce repeating requests that can be cached. 
+
+
+
+\section{Visual evaluation}
+
+The second objective from chapter \ref{chapter:objective-usability} defines the vague goal of supporting the user by compacting the amount of information that is visualized. To do so, two visualizations have been provided: first, the Client-side Geocluster Visualization component as visualized in figure \ref{fig:geocluster-demo-site} of chapter \ref{chapter:geocluster-vis} and second, an alternative visualization similar to the Leaflet.markercluster library for the GeoRecruiter use case, see figure \ref{fig:drupaljobs-geocluster-solr} in chapter \ref{chapter:use-case-georecruiter}.
+
+Both implementations fulfill most of the clutter reduction criteria from chapter \ref{clutter-reduction}:
+
+\begin{enumerate}
+
+\item \textit{Overlap} is avoided by visualizing a non-overlapping clustering of points, as created by geohash-based clustering algorithm of Geocluster.
+
+\item \textit{Spatial information} is expressed as an aggregate of latitude and longitude values for each cluster, approximating its centroid. One problem with the current implementations is, that clusters aren't ``stable''. In some experiments, changes to the bounding box will cause a change of cluster assignment. Intuitively, this leads to confusion of the user and should be investigated upon further. 
+
+\item The Leaflet Bounding Box strategy implementation allows to \textit{localize} the view by panning and zooming and therefore reduce the display to a specific region.
+
+\item \textit{Scalability} is provided by the underlying clustering algorithm, as evaluated in the previous section.
+
+\item The configuration options of Geocluster, presented in chapter \ref{chapter:geocluster-config}, allow to \textit{adjust} the minimum distance between clusters. Additional configuration options are provided by the Views integration of the Geocluster module. Still, the configuration options could be expanded for example to control visual parameters of clusters. 
+
+\item The criterion of \textit{showing point/line attributes} is fulfilled only in a very limited way. Both implementations are currently restricted to displaying the number of items within a cluster as the only aggregate value. In order to support complex visualization techniques for multivariate data as discussed in chapter \ref{chapter:cluster-vis}, the clustering implementation needs to provide the required, aggregate values of the underlying data.
+
+\item As explained in the discussion of the \textit{discriminating points/lines} criterion, its definition seems unclear. Clustered items and individual points are visualized in a different way, which can be seen as a fulfillment. On the other hand, the visualization currently doesn't provide any means of inspecting clusters. Only a list of identifiers of the items within a cluster is provided. Based upon the identifiers, a popup could be used to visualize the items a in more detailed way.
+
+\item With regards to \textit{overlap density}, the number of items within clusters is indicated by both visualizations, but using different means. The Geocluster visualization doesn't make use of visual attributes like size or color, instead it creates a marker glyph that contains the number of items using textual representation. The GeoRecruiter prototype uses a color ramp that indicates low cluster densities from green and yellow to high densities indicated by tones of red and violet.
+
+\end{enumerate}
+
+\begin{figure}[h]
+  \begin{center}
+    \hspace*{-1.5cm}\includegraphics[width=1.2\textwidth]{figures/vis_eval_geocluster.pdf}
+    \caption{Evaluation of Geocluster visualization techniques for clusters on a map. Legend:~`x':~yes,~`\textasciitilde': possibly, `-': no.}
+    \label{fig:vis-eval-geocluster}
+  \end{center}
+\end{figure}
+
+Next, the evaluation of visualization techniques for clusters on map presented in \ref{chapter:eval-vis} is applied to the two Geocluster implementations as illustrated in figure \ref{fig:vis-eval-geocluster}. It reiterates some key aspects identified by the previous discussion of clutter reduction criteria.
+
+\textbf{Cluster sizes}: Both visualizations show the number of items within a cluster, but only the GeoRecruiter example uses color and none of them encodes the size of a cluster into the shape size. As naturally, a cluster with more items can be visualized larger than smaller clusters, the algorithm could be improved for growing clusters by their size. The bigger size of a cluster would therefore reduce the distance to its neighbor clusters, potentially merging additional neighbors into it. Andrew Betts describes a similar approach under the term \textit{``Grid based viral growth argorithm''}~\cite{web:clustering-google}.
+
+For low zoom levels, the roundtrip to the server for fetching a separate clustered result on every bounding box change can be an overhead. Christopher Calid\footnote{\url{http://drupal.org/user/210499}} proposes a way of ``Progressively enhance server-side with client-side clustering''\footnote{\url{http://drupal.org/node/1914704}}. The intention is to transition from server-side clustering higher zoom levels to client-side clustering for lower zoom levels.
+
 
 \section{Further evaluation}
 
-The second objective on integration and extensibility defined in chapter \ref{chapter:objective-integration} has been fulfilled by the Geocluster module as it integrates with Views, Views GeoJSON and other Drupal mapping modules. In addition, the implementation of the clustering algorithm can be extended using plugins as explained in chapter \ref{chapter:impl-alg}. Geocluster was also released under the GPL license as required by objective \ref{chapter:open-source}. With regards to objective \ref{chapter:objective-use-cases}, a demo use case has been implemented that show cases all the functionality needed. The actual GeoRecruiter use case hasn't been implemented, but as stated in \ref{chapter:use-case-georecruiter}, the groundwork has been established in order to do so. Finally, main usability concerns have been realized with the Geocluster Visualization component.
+The third objective on integration and extensibility defined in chapter \ref{chapter:objective-integration} has been fulfilled by the Geocluster module as it integrates with Views, Views GeoJSON and other Drupal mapping modules. In addition, the implementation of the clustering algorithm can be extended using plugins as explained in chapter \ref{chapter:impl-alg}. Geocluster was also released under the GPL license as required by objective \ref{chapter:open-source}. With regards to objective \ref{chapter:objective-use-cases}, a demo use case has been implemented that show cases all the functionality needed. Also, the GeoRecruiter use case has been prototyped.
+ 
+While most objectives have been reached, there are still many parts of the Geocluster implementation that can be improved upon. For example, the way that the Drupal mapping stack integrates with the Views module isn't designed for processing clustered results. The current implementation of Geocluster performs various workarounds in order to inject clustered results into the process. Especially for the Solr-based implementation this leads to code-duplication because in the standard case results are processed as arrays while in the other case, results need to be PHP objects. If possible, a cleaner way of integrating clustering with the related modules is desirable.   
 
-While most objectives have been reached, there are still many parts of the Geocluster implementation that can be improved upon:
-
-\begin{itemize}
-
-\item \textbf{Cluster sizes}: The current implementation doesn't respect the size of a cluster. As naturally, a cluster with more items can be visualized larger than smaller clusters, the algorithm could be improved for growing clusters by their size. The bigger size of a cluster would therefore reduce the distance to its neighbor clusters, potentially merging additional neighbors into it. Andrew Betts describes a similar approach under the term \textit{``Grid based viral growth argorithm''}\footnote{\url{http://web.archive.org/web/20071121140547/http://trib.tv/tech/clustering-points-on-a-google-map/}}.
-
-\item \textbf{Cluster centers}: While the PHP- and MySQL-based algorithm provide means of calculating a centroid as the center of a cluster, the Solr-based clustering algorithm is limited in this regards. Solr doesn't seem to provide the same functionality to calculate the mean value for a field using the grouping function, as the MySQL-based algorithm leverages the $AVG$ function for latitude and longitude. Potentially, the stats component\footnote{\url{http://wiki.apache.org/solr/StatsComponent}} could be used for calculating the centroid of cluster items within the Solr-based algorithm.
-
-\item \textbf{Processing clustered results}: The way that the Drupal mapping stack integrates with the Views module isn't designed for processing clustered results. The current implementation of Geocluster performs various workarounds in order to inject clustered results into the process. Especially for the Solr-based implementation this leads to code-duplication because in the standard case results are processed as arrays while in the other case, results need to be PHP objects. If possible, a cleaner way of integrating clustering with the related modules is desirable.   
-
-\item \textbf{Improve client-side handling and visualization}: The current implementation for visualizing clustered results is very basic. A relative sizing of cluster items according to their clusters is needed and should also be supported by the algorithm as stated before. In addition, it would be good to have be a clean way to configre the how data for clustered results should be displayed and integrate it with how non-clustered data is represented. For low zoom levels, the roundtrip to the server for fetching a separate clustered result on every bounding box change can be an overhead. Christopher Calid\footnote{\url{http://drupal.org/user/210499}} proposed a way of ``Progressively enhance server-side with client-side clustering''\footnote{\url{http://drupal.org/node/1914704}}. The intention is to transition from server-side clustering higher zoom levels to client-side clustering for lower zoom levels.
-
-\end{itemize}
 
 \section{Conclusions}
 
@@ -83,7 +114,7 @@ The topic server-side clustering for Drupal was decided upon thanks to recommend
 
 It took until September 2012, when I implemented a first prototype of the PHP-based clustering algorithm and figured out basic integration needs for to make the clustering task work with Drupal. From then, several iterations and alpha releases of Geocluster led to completing MySQL and Solr-based clustering by the end of 2012. As by finishing this thesis in March 2013, performance tests have been concluded for Geocluster and a first beta release has been published.
 
-There has already been some positive feedback from people interested in using Geocluster as a drop-in solution to create scalable maps using server-side clustering. On the other hand, I have to admit that integration clustering into a complex stack such as the Drupal mapping stack has its advantages and disadvantages. Geocluster does a decent job at clustering data server-side, but the tight integration into the Drupal stack also comes at the cost of overhead and complex integration code. Given the expertise in writing code, it can make sense to create a custom server-side clustering solution for a specific purpose without depending on a number of separate modules. Still, the generic approach has the benefit of others potentially being able to use the Geocluster module. Writing this thesis was both challenging and fun. Working on something and being able to share it with the Drupal community, a steadily growing team of contributors of Free and Open Source software, has been a rewarding experience and a solid source of motivation. 
+There has already been some positive feedback from people interested in using Geocluster as a drop-in solution to create scalable maps using server-side clustering. On the other hand, I have to admit that integrating clustering into a complex stack such as the Drupal mapping stack has its advantages and disadvantages. Geocluster does a decent job at clustering data server-side, but the tight integration into the Drupal stack also comes at the cost of overhead and complex integration code. For a person that has the expertise in writing code, it might make sense to create a custom server-side clustering solution for a specific purpose without depending on a number of separate modules. Still, the generic approach has the benefit of others potentially being able to use the Geocluster module. Writing this thesis was both challenging and fun.Drupal is a steadily growing team of contributors of Free and Open Source software. Being able to share my works with such a great community has been a rewarding experience and a solid source of motivation. 
 
 \section{Future work}
 

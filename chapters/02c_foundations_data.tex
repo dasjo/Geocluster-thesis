@@ -39,8 +39,6 @@ By definition, space decomposition methods partition space in a way so that,
 \item partitions are infinitely decomposable to generate finer sub-partitions of higher resolution.~\cite{Samet90spatialdata}
 \end{itemize}
 
-Various space decomposition methods exist. They can be classified depending on the shapes that are used for the partitioning patterns. Polygonal shapes are computationally simpler and can be used to approximate the interior of a region while non-polygonal shapes are more geared towards approximating the perimeter of region. Figure~\ref{fig:space-decompositions} visualizes a number of basic, polygon-based space decomposition methods. 
-
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=0.5\textwidth]{figures/space_decompositions.png}
@@ -49,11 +47,12 @@ Various space decomposition methods exist. They can be classified depending on t
   \end{center}
 \end{figure}
 
+Various space decomposition methods exist. They can be classified depending on the shapes that are used for the partitioning patterns. Polygonal shapes are computationally simpler and can be used to approximate the interior of a region while non-polygonal shapes are more geared towards approximating the perimeter of region. Figure~\ref{fig:space-decompositions} visualizes a number of basic, polygon-based space decomposition methods. 
+
+
 The simplest polygonal space decomposition method is based on squares. It is directly related to the Morton and Peano-Hilbert space order methods as described in the previous chapter \ref{chapter:space-order}. Both orders work in a hierarchical manner and visit entire sub-quadrants first, before continuing further. This is why they are predestined to decomposing space into squares as indicated in figures~\ref{fig:space-orders}~and~\ref{fig:space-decompositions}.
 
 \subsection{Quadtree}
-
-Quadtrees are hierarchical data structures based on recursive decomposition of space. Their original motivation was to optimize storage by aggregating identical or similar values. Over time, they have also been studied to optimize execution time of spatial application and have been established as a common practice for representing and storing spatial data. The resolution of a quadtree can be fixed or variable. It directly relates to the number of decomposition times of the space where the data points live. A standardized implementation is the region quadtree which subdivides space into four equal-sized quadrants.
 
 \begin{figure}[h]
   \begin{center}
@@ -62,6 +61,9 @@ Quadtrees are hierarchical data structures based on recursive decomposition of s
     \label{fig:quadtree}
   \end{center}
 \end{figure}
+
+Quadtrees are hierarchical data structures based on recursive decomposition of space. Their original motivation was to optimize storage by aggregating identical or similar values. Over time, they have also been studied to optimize execution time of spatial application and have been established as a common practice for representing and storing spatial data. The resolution of a quadtree can be fixed or variable. It directly relates to the number of decomposition times of the space where the data points live. A standardized implementation is the region quadtree which subdivides space into four equal-sized quadrants.
+
 
 Quadtrees can be constructed in different ways. A top-down approach implements the Morton order which maps the multidimensional data to one dimension and has been introduced in chapter~\ref{chapter:space-order}. Also note that the term quadtree has taken various meanings: actually it is a trie (or digital tree) structure because each data key is a sequence of characters. ``A node at depth $i$ in the trie represents an $M$-way branch depending on the $i$-th character'' \cite{Samet90spatialdata}.
 
